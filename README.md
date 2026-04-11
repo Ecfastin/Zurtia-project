@@ -8,8 +8,6 @@
 Zurtia es una solución logística diseñada para optimizar el flujo de pedidos Pickup. Nuestra plataforma cierra la brecha entre la venta online y la entrega física, proporcionando a los operarios de tienda una interfaz intuitiva para el armado rápido y preciso de pedidos, garantizando una experiencia de retiro sin fricciones para el cliente final.
 
 
----------------------------------------------------------------------------------------------------------------------------------------
-
 
 
 # ✨ *Características principales* 
@@ -24,7 +22,6 @@ Zurtia es una solución logística diseñada para optimizar el flujo de pedidos 
 
 
 
----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
