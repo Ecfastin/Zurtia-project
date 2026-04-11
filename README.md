@@ -35,6 +35,12 @@ Zurtia es una solución logística diseñada para optimizar el flujo de pedidos 
    
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+# Figma 
+
+https://www.figma.com/files/team/1624571192914063158/project/585283184?fuid=1624571191513152524
+
+
+
 # *Atributos*
 
 <img width="753" height="555" alt="image" src="https://github.com/user-attachments/assets/0d6f4bb7-670e-439d-88dd-3bd1541a1298" />
