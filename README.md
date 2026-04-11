@@ -4,15 +4,20 @@
 
 
 📝 *Descripción*
+
 Zurtia es una solución logística diseñada para optimizar el flujo de pedidos Pickup. Nuestra plataforma cierra la brecha entre la venta online y la entrega física, proporcionando a los operarios de tienda una interfaz intuitiva para el armado rápido y preciso de pedidos, garantizando una experiencia de retiro sin fricciones para el cliente final.
 
 
 ✨ *Características principales* 
  
 -> Optimización de Rutas de Recolección: Algoritmo que organiza los productos por pasillo o categoría para que el trabajador camine lo menos posible.
+
 -> Escaneo y Validación: Soporte para lectura de códigos de barras/QR para asegurar que el producto recolectado es el correcto.
+
 -> Control de Sustituciones: Flujo de trabajo inteligente para manejar productos sin stock, permitiendo ofrecer alternativas al cliente.
+
 -> Dashboard de Rendimiento: Panel administrativo para medir la velocidad de armado de pedidos y eficiencia de los operarios.
+
 
 
 🛠️ Tecnologías utilizadas
