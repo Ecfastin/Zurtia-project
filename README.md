@@ -1,6 +1,7 @@
 # Nuevo_Proyecto
 
 *Atributos*
+
 <img width="753" height="555" alt="image" src="https://github.com/user-attachments/assets/0d6f4bb7-670e-439d-88dd-3bd1541a1298" />
 <img width="787" height="351" alt="image" src="https://github.com/user-attachments/assets/bfcd51e2-fbe0-4957-b7b2-b87147db7da2" />
 <img width="774" height="147" alt="image" src="https://github.com/user-attachments/assets/75837ddc-071f-4e38-858c-33cec31ce8f3" />
