@@ -13,7 +13,6 @@ Zurtia es una solución logística diseñada para optimizar el flujo de pedidos 
 ✨ *Características principales* 
  
 -> Optimización de Rutas de Recolección: Algoritmo que organiza los productos por pasillo o categoría para que el trabajador camine lo menos posible.
-
 -> Escaneo y Validación: Soporte para lectura de códigos de barras/QR para asegurar que el producto recolectado es el correcto.
 
 -> Control de Sustituciones: Flujo de trabajo inteligente para manejar productos sin stock, permitiendo ofrecer alternativas al cliente.
