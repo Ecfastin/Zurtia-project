@@ -22,9 +22,6 @@ Zurtia es una solución logística diseñada para optimizar el flujo de pedidos 
 
 
 
-
-
-
 # 🛠️ Tecnologías utilizadas
 
 -> React native
