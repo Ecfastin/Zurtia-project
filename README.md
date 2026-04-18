@@ -34,7 +34,7 @@ Zurtia es una solución logística diseñada para optimizar el flujo de pedidos 
 
 # Link [Figma](https://www.figma.com/files/team/1624571192914063158/project/585283184?fuid=1624571191513152524)
 
-# Link [Decisión Arquitectónica]([https://alumnosuvcl-my.sharepoint.com/:w:/r/personal/ariadna_espejo_estudiantes_uv_cl/Documents/Dise%C3%B1o%20arquitect%C3%B3nico%20y%20alto%20nivel.docx](https://alumnosuvcl-my.sharepoint.com/:w:/g/personal/ariadna_espejo_estudiantes_uv_cl/IQDAUATruxZvRp-cSEFSrouKAV0WiTOdU7gKu30Y08CEiIw?e=gMCsBB)
-https://alumnosuvcl-my.sharepoint.com/:w:/g/personal/ariadna_espejo_estudiantes_uv_cl/IQDAUATruxZvRp-cSEFSrouKAV0WiTOdU7gKu30Y08CEiIw?e=gMCsBB
+# Link [Decisión Arquitectónica](https://alumnosuvcl-my.sharepoint.com/:w:/r/personal/ariadna_espejo_estudiantes_uv_cl/Documents/Dise%C3%B1o%20arquitect%C3%B3nico%20y%20de%20alto%20nivel.docx?d=web0450c016bb466f9f9c484152ae8b8a&csf=1&web=1&e=qjGj3K)
+
 
 
