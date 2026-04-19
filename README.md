@@ -44,5 +44,5 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 # Link [Decisión Arquitectónica](DiseñoArquitectonico.md)
 
 # Link [Requisitos Extrafuncionales](RequisitosExtrafuncionales.md)
-
+# Link [EntidadesDelDominio](EntidadesDelDominio.md)
 
