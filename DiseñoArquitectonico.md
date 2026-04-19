@@ -4,9 +4,9 @@
 Elegimos el estilo REST/SOA porque la esencia de nuestro sistema es la interoperabilidad. Al ser una herramienta que depende de datos externos (pedidos y stock del supermercado), necesitamos una arquitectura basada en servicios que nos permita consumir y exponer información de manera estandarizada. Este estilo facilita la integración con el sistema del supermercado y permite que la aplicación del picker sea ligera, escalable y se comunique con el servidor de forma eficiente. Al elegir un estilo REST/SOA, sacrificamos autonomia de datos, ya que el sistema depende de la disponibilidad de las APIs del supermercado para funcionar.
 
 
-## 🏗️ Descomposición de Módulos (Estilo REST/SOA)
+## 🏗️ Módulos (Estilo REST/SOA)
 
-Para **EcFastin**, los módulos se han estructurado siguiendo un estilo arquitectónico que separa las responsabilidades en capas, permitiendo escalabilidad y facilidad de mantenimiento.
+Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitectónico que separa las responsabilidades en capas, permitiendo escalabilidad y facilidad de mantenimiento.
 
 ### 1. Capa de Presentación (Frontend Mobile)
 * **Módulo de Interfaz de Usuario (UI)**
@@ -21,7 +21,7 @@ Para **EcFastin**, los módulos se han estructurado siguiendo un estilo arquitec
 ### 2. Capa de Servicios de Aplicación (Backend Node.js - REST API)
 * **Módulo de Autenticación y Autorización**
     * **Responsabilidad:** Validación de credenciales y generación de tokens **JWT**.
-    * **Acceso:** Permite el inicio de sesión tanto con correos personales (Gmail) como institucionales.
+    * **Acceso:** Permite el inicio de sesión tanto con correos personales.
 * **Módulo de Gestión de Pedidos**
     * **Responsabilidad:** Lógica de negocio principal; asignación de tareas a pickers y flujo de estados (Pendiente, En Proceso, Finalizado).
 * **Módulo de Notificaciones**
