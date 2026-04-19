@@ -6,10 +6,10 @@
 
 | Nombre | Rol | Responsabilidades principales |
 | :--- | :--- | :--- |
-| **Ariadna Espejo Torres** | Product Owner | Historias de Usuario, Archivo Arquitectura.md |
-| **Benjamin Figueroa Matamala** | Scrum Master | Entidades del Dominio, Diseño Arquitectonico |
-| **Cristofer Riveros Gapuz** | Developer | Mockups |
-| **Ignacio Cortés Catrín** | Developer | Mockups |
+| **Ariadna Espejo Torres** | Product Owner | Historias de Usuario, Archivo Arquitectura |
+| **Benjamin Figueroa Matamala** | Scrum Master | Entidades del Dominio, DiseñoArquitectonico.md |
+| **Cristofer Riveros Gapuz** | Developer | Mockups, prompts |
+| **Ignacio Cortés Catrín** | Developer | Mockups, prompts |
 | **Patricio Rivadeneira Alfaro** | Developer | Requisitos Extrafuncionales |
 
 # 📝 *Descripción*
