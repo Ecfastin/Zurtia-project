@@ -1,0 +1,37 @@
+# 📋 Catálogo de Requisitos No Funcionales
+
+Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcFastin)**, clasificados según la norma **ISO 25010**. Estos requisitos definen las restricciones técnicas y de calidad que guían las decisiones de arquitectura del proyecto.
+
+---
+
+## 🚀 Requisitos de Calidad de Servicio
+
+| ID | Tipo (ISO 25010) | Descripción | Prioridad |
+| :--- | :--- | :--- | :--- |
+| **REF-01** | Rendimiento | El sistema debe procesar escaneos y actualizar el estado del ítem en **menos de 500 ms** bajo condiciones normales. | **Alta** |
+| **REF-02** | Seguridad | Acceso exclusivo a personal autorizado mediante **tokens JWT** con expiración configurable y renovación automática. | **Alta** |
+| **REF-03** | Disponibilidad | Disponibilidad mínima del **99,5%** durante el horario operativo (06:00-23:00). | **Alta** |
+| **REF-04** | Mantenibilidad | Estructura modular basada en el principio de **responsabilidad única** para facilitar correcciones sin comprometer otros módulos. | **Alta** |
+| **REF-05** | Usabilidad | Interfaz intuitiva para operar con una sola mano, alto contraste y máximo 30 min de entrenamiento. | **Alta** |
+| **REF-06** | Interoperabilidad | Integración con APIs externas del supermercado mediante contratos **REST estandarizados**. | **Alta** |
+| **REF-07** | Recuperabilidad | Ante fallos, el sistema debe retomar el estado exacto del pedido en un máximo de **10 segundos** al reconectarse. | **Alta** |
+| **REF-08** | Testabilidad | Cobertura mínima de pruebas unitarias del **70%** mediante el uso de mocks para dependencias. | **Alta** |
+| **REF-09** | Escalabilidad | Soporte para al menos **50 pickers simultáneos** por sucursal sin rediseño arquitectónico. | **Media** |
+| **REF-10** | Restricción Técnica | Aplicación móvil nativa/híbrida con acceso a cámara y escáner en **Android e iOS**. | **Alta** |
+| **REF-11** | Funcionamiento Offline | Permite continuar el picking durante interrupciones de conexión de hasta **5 minutos** con sincronización automática. | **Alta** |
+| **REF-12** | Privacidad y Datos | Cifrado de fotos y datos en reposo (**AES-256**) y transmisión segura mediante **HTTPS/TLS 1.2+**. | **Alta** |
+
+---
+
+## 🏗️ Relación con Decisiones de Arquitectura
+
+A continuación se explica cómo el estilo **REST/SOA** aborda los requisitos críticos del sistema:
+
+| REF ID | Decisión de Arquitectura | Impacto en el Sistema |
+| :--- | :--- | :--- |
+| **REF-01** | Estilo REST | Permite que el frontend sea un cliente liviano (*thin client*), reduciendo la latencia en operaciones críticas. |
+| **REF-02** | Auth JWT | REST soporta autenticación *stateless* por endpoint; el módulo Auth opera de forma independiente en el estilo SOA. |
+| **REF-03** | SOA (Aislamiento) | Despliega servicios independientes; un fallo en el Adaptador Externo no compromete la API Central ni la sesión. |
+| **REF-05** | Separación Frontend | Permite optimizar la capa de presentación para la operación móvil sin afectar la lógica del backend. |
+| **REF-06** | Adaptador Externo | Encapsula la integración con terceros usando contratos REST estandarizados. |
+| **REF-
