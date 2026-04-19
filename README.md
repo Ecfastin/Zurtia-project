@@ -2,8 +2,7 @@
 
 -> Un sistema de Pickeo para todas las empresas de supermercados.
 
-
-Integrantes del proyecto:
+### 👥 Integrantes del proyecto
 
 | Nombre | Rol | Responsabilidades principales |
 | :--- | :--- | :--- |
