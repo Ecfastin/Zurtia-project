@@ -17,7 +17,7 @@ Para Zurtia, los módulos se dividen según su función dentro del flujo de pick
 
 * Módulo de Escaneo: Integración nativa con la cámara/sensor para la captura de códigos de barras.
 
-
+/n
 
 3. Capa de Servicios de Aplicación (Backend Node.js - REST API)
 Módulo de Autenticación y Autorización: Encargado de la validación de credenciales y generación de tokens JWT (permite el acceso con Gmail o cuentas institucionales).
