@@ -9,10 +9,12 @@ Para Zurtia, los módulos se dividen según su función dentro del flujo de pick
 
 1. Capa de Presentación (Frontend Mobile): 
 -Módulo de Interfaz de Usuario (UI): Gestiona las pantallas de la App (Figma), los temas visuales y la respuesta táctil.
+
 -Módulo de Gestión de Estado local: Controla el contador de productos (26/42) y los datos temporales del pedido actual para que la app sea fluida.
+
 -Módulo de Escaneo: Integración nativa con la cámara/sensor para la captura de códigos de barras.
 
-2. Capa de Servicios de Aplicación (Backend Node.js - REST API)
+3. Capa de Servicios de Aplicación (Backend Node.js - REST API)
 Módulo de Autenticación y Autorización: Encargado de la validación de credenciales y generación de tokens JWT (permite el acceso con Gmail o cuentas institucionales).
 
 Módulo de Gestión de Pedidos: Contiene la lógica de negocio; asigna pedidos a los pickers y gestiona el flujo de estados (Pendiente, En Proceso, Finalizado).
