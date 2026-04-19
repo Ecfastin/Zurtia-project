@@ -8,7 +8,7 @@ Elegimos el estilo REST/SOA porque la esencia de nuestro sistema es la interoper
 
 Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitectónico que separa las responsabilidades en capas, permitiendo escalabilidad y facilidad de mantenimiento.
 
-### 1. Capa de Presentación (Frontend Mobile)
+### 1. Capa de Presentación (Frontend Mobile):
 * **Módulo de Interfaz de Usuario (UI)**
     * **Responsabilidad:** Gestión de las pantallas de la App (basadas en diseño Figma), temas visuales y respuesta táctil.
     * **Objetivo:** Garantizar una experiencia de usuario fluida y adaptada al entorno de supermercado.
@@ -18,7 +18,7 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 * **Módulo de Escaneo**
     * **Responsabilidad:** Integración nativa con la cámara del dispositivo para la captura de códigos de barras.
 
-### 2. Capa de Servicios de Aplicación (Backend Node.js - REST API)
+### 2. Capa de Servicios de Aplicación:
 * **Módulo de Autenticación y Autorización**
     * **Responsabilidad:** Validación de credenciales y generación de tokens **JWT**.
     * **Acceso:** Permite el inicio de sesión tanto con correos personales.
@@ -27,8 +27,8 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 * **Módulo de Notificaciones**
     * **Responsabilidad:** Envío de alertas push para nuevos pedidos y avisos de quiebre de stock al perfil de gerente/repositor.
 
-### 3. Capa de Interoperabilidad (SOA - Service Oriented Architecture)
-* **Adaptador de Inventario Legado (Legacy Adapter)**
+### 3. Capa de Interoperabilidad:
+* **Adaptador de Inventario**
     * **Responsabilidad:** "Traductor" de comunicación con sistemas antiguos del supermercado para consulta de stock real y pasillos.
 * **Módulo de Integración de Precios**
     * **Responsabilidad:** Servicio dedicado a recuperar valores unitarios, totales y aplicación de ofertas vigentes en tiempo real.
