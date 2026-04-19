@@ -41,7 +41,7 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 
 # -> Justificación de la Coherencia Arquitectónica:
 
-* Independencia de Módulos: Si el sistema de precios del supermercado cambia, solo necesitas modificar el Módulo de Integración de Precios, sin tocar la App móvil ni el sistema de login.
+* Independencia de Módulos: Si el sistema de precios del supermercado cambia, solo se modifica el Módulo de Integración de Precios, sin tocar la App móvil ni el sistema de login.
 
 * Escalabilidad: Al ser REST, podemos tener a 100 pickers conectados simultáneamente, ya que cada petición es independiente y segura gracias al JWT.
 
