@@ -3,6 +3,14 @@
 -> Un sistema de Pickeo para todas las empresas de supermercados.
 
 
+Integrantes del proyecto:
+
+->Ariadna Espejo Torres       | Product Owner | Historias de Usuario, Archivo Arquitectura.md
+->Benjamin Figueroa Matamala  | Scrum Master  | Entidades del Dominio, Diseño Arquitectonico 
+->Cristofer Riveros Gapuz     | Developer     | Mockups
+->Ignacio Cortés Catrín       | Developer     | Mockups
+->Patricio Rivadeneira Alfaro | Developer     | Requisitos Extrafuncionales, 
+
 # 📝 *Descripción*
 
 Zurtia es una solución logística diseñada para optimizar el flujo de pedidos Pickup. Nuestra plataforma cierra la brecha entre la venta online y la entrega física, proporcionando a los operarios de tienda una interfaz intuitiva para el armado rápido y preciso de pedidos, garantizando una experiencia de retiro sin fricciones para el cliente final.
