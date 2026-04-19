@@ -7,10 +7,13 @@ Elegimos el estilo REST/SOA porque la esencia de nuestro sistema es la interoper
 # Descomposición de Módulos (Estilo REST/SOA)
 Para Zurtia, los módulos se dividen según su función dentro del flujo de picking y la comunicación con el supermercado:
 
-1. Capa de Presentación (Frontend Mobile): 
--Módulo de Interfaz de Usuario (UI): Gestiona las pantallas de la App (Figma), los temas visuales y la respuesta táctil.
+1. Capa de Presentación (Frontend Mobile):
+
+-Módulo de Interfaz de Usuario (UI): Gestiona las pantallas de la App (Figma), los temas visuales y la respuesta táctil.  
+
 
 -Módulo de Gestión de Estado local: Controla el contador de productos (26/42) y los datos temporales del pedido actual para que la app sea fluida.
+
 
 -Módulo de Escaneo: Integración nativa con la cámara/sensor para la captura de códigos de barras.
 
