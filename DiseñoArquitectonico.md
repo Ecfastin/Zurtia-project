@@ -38,3 +38,11 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
     * **Responsabilidad:** Almacenamiento de perfiles, historial de pedidos, logs de rendimiento y fotos de respaldo (seguridad).
 * **Módulo de Caché de Imágenes**
     * **Responsabilidad:** Optimización de entrega de miniaturas (thumbnails) para minimizar el consumo de datos en la red del supermercado.
+
+-> Justificación de la Coherencia Arquitectónica:
+
+* Independencia de Módulos: Si el sistema de precios del supermercado cambia, solo necesitas modificar el Módulo de Integración de Precios, sin tocar la App móvil ni el sistema de login.
+
+* Escalabilidad: Al ser REST, podemos tener a 100 pickers conectados simultáneamente, ya que cada petición es independiente y segura gracias al JWT.
+
+* Resiliencia: El Módulo de Gestión de Estado local en la App permite que, si el servidor falla por un momento, el picker no pierda lo que ya escaneó.
