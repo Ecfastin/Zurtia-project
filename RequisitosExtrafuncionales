@@ -1,37 +1,32 @@
-# 📋 Catálogo de Requisitos No Funcionales
+# Catalogo de Requisitos No Funcionales (ISO 25010)
 
-Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcFastin)**, clasificados según la norma **ISO 25010**. Estos requisitos definen las restricciones técnicas y de calidad que guían las decisiones de arquitectura del proyecto.
+Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcFastin)**.
 
----
+## 1. Requisitos de Calidad de Servicio
 
-## 🚀 Requisitos de Calidad de Servicio
-
-| ID | Tipo (ISO 25010) | Descripción | Prioridad |
+| ID | Tipo | Descripcion | Prioridad |
 | :--- | :--- | :--- | :--- |
-| **REF-01** | Rendimiento | El sistema debe procesar escaneos y actualizar el estado del ítem en **menos de 500 ms** bajo condiciones normales. | **Alta** |
-| **REF-02** | Seguridad | Acceso exclusivo a personal autorizado mediante **tokens JWT** con expiración configurable y renovación automática. | **Alta** |
-| **REF-03** | Disponibilidad | Disponibilidad mínima del **99,5%** durante el horario operativo (06:00-23:00). | **Alta** |
-| **REF-04** | Mantenibilidad | Estructura modular basada en el principio de **responsabilidad única** para facilitar correcciones sin comprometer otros módulos. | **Alta** |
-| **REF-05** | Usabilidad | Interfaz intuitiva para operar con una sola mano, alto contraste y máximo 30 min de entrenamiento. | **Alta** |
-| **REF-06** | Interoperabilidad | Integración con APIs externas del supermercado mediante contratos **REST estandarizados**. | **Alta** |
-| **REF-07** | Recuperabilidad | Ante fallos, el sistema debe retomar el estado exacto del pedido en un máximo de **10 segundos** al reconectarse. | **Alta** |
-| **REF-08** | Testabilidad | Cobertura mínima de pruebas unitarias del **70%** mediante el uso de mocks para dependencias. | **Alta** |
-| **REF-09** | Escalabilidad | Soporte para al menos **50 pickers simultáneos** por sucursal sin rediseño arquitectónico. | **Media** |
-| **REF-10** | Restricción Técnica | Aplicación móvil nativa/híbrida con acceso a cámara y escáner en **Android e iOS**. | **Alta** |
-| **REF-11** | Funcionamiento Offline | Permite continuar el picking durante interrupciones de conexión de hasta **5 minutos** con sincronización automática. | **Alta** |
-| **REF-12** | Privacidad y Datos | Cifrado de fotos y datos en reposo (**AES-256**) y transmisión segura mediante **HTTPS/TLS 1.2+**. | **Alta** |
+| **REF-01** | Rendimiento | Procesamiento de escaneos en menos de 500ms. | Alta |
+| **REF-02** | Seguridad | Acceso mediante tokens JWT con expiracion. | Alta |
+| **REF-03** | Disponibilidad | Disponibilidad del 99,5% en horario operativo. | Alta |
+| **REF-04** | Mantenibilidad | Estructura modular (Responsabilidad unica). | Alta |
+| **REF-05** | Usabilidad | Interfaz para operar con una sola mano. | Alta |
+| **REF-06** | Interoperabilidad | Integracion mediante REST estandarizados. | Alta |
+| **REF-07** | Recuperabilidad | Retoma estado del pedido en max. 10 seg. | Alta |
+| **REF-08** | Testabilidad | Cobertura de pruebas unitarias del 70%. | Alta |
+| **REF-09** | Escalabilidad | Soporte para 50 pickers simultaneos. | Media |
+| **REF-10** | Tecnica | App nativa/hibrida (Android e iOS). | Alta |
+| **REF-11** | Offline | Funcionamiento sin red hasta por 5 min. | Alta |
+| **REF-12** | Privacidad | Cifrado de fotos y datos (AES-256). | Alta |
 
 ---
 
-## 🏗️ Relación con Decisiones de Arquitectura
+## 2. Relacion con Decisiones de Arquitectura
 
-A continuación se explica cómo el estilo **REST/SOA** aborda los requisitos críticos del sistema:
-
-| REF ID | Decisión de Arquitectura | Impacto en el Sistema |
+| REF ID | Decision de Arquitectura | Impacto en el Sistema |
 | :--- | :--- | :--- |
-| **REF-01** | Estilo REST | Permite que el frontend sea un cliente liviano (*thin client*), reduciendo la latencia en operaciones críticas. |
-| **REF-02** | Auth JWT | REST soporta autenticación *stateless* por endpoint; el módulo Auth opera de forma independiente en el estilo SOA. |
-| **REF-03** | SOA (Aislamiento) | Despliega servicios independientes; un fallo en el Adaptador Externo no compromete la API Central ni la sesión. |
-| **REF-05** | Separación Frontend | Permite optimizar la capa de presentación para la operación móvil sin afectar la lógica del backend. |
-| **REF-06** | Adaptador Externo | Encapsula la integración con terceros usando contratos REST estandarizados. |
-| **REF-
+| **REF-01** | Estilo REST | Frontend liviano, reduce latencia. |
+| **REF-02** | Auth JWT | Soporta autenticacion stateless. |
+| **REF-03** | SOA (Aislamiento) | Fallos en adaptadores no afectan la API. |
+| **REF-06** | Adaptador Externo | Encapsula la integracion con terceros. |
+| **REF-11** | Cache de Estado | Permite reanudar el picking tras un fallo. |
