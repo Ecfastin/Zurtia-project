@@ -16,8 +16,6 @@ Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcF
 | **REF-08** | Testabilidad | Cobertura de pruebas unitarias del 70%. | Alta |
 | **REF-09** | Escalabilidad | Soporte para 50 pickers simultaneos. | Media |
 | **REF-10** | Tecnica | App nativa/hibrida (Android e iOS). | Alta |
-| **REF-11** | Offline | Funcionamiento sin red hasta por 5 min. | Alta |
-| **REF-12** | Privacidad | Cifrado de fotos y datos (AES-256). | Alta |
 
 ---
 
