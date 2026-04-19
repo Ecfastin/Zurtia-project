@@ -6,7 +6,7 @@ Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcF
 
 | ID | Tipo | Descripcion | Prioridad |
 | :--- | :--- | :--- | :--- |
-| **REF-01** | Rendimiento | Procesamiento de escaneos en menos de 500ms. | Alta |
+| **REF-01** | Rendimiento | Procesamiento de escaneos en menos de 500ms. | Medio |
 | **REF-02** | Seguridad | Acceso mediante tokens JWT con expiracion. | Alta |
 | **REF-03** | Disponibilidad | Disponibilidad del 99,5% en horario operativo. | Alta |
 | **REF-04** | Mantenibilidad | Estructura modular (Responsabilidad unica). | Alta |
@@ -14,8 +14,8 @@ Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcF
 | **REF-06** | Interoperabilidad | Integracion mediante REST estandarizados. | Alta |
 | **REF-07** | Recuperabilidad | Retoma estado del pedido en max. 10 seg. | Alta |
 | **REF-08** | Testabilidad | Cobertura de pruebas unitarias del 70%. | Alta |
-| **REF-09** | Escalabilidad | Soporte para 50 pickers simultaneos. | Media |
-| **REF-10** | Portabilidad | App nativa/hibrida (Android e iOS). | medio |
+| **REF-09** | Escalabilidad | Soporte para 50 pickers simultaneos. | Medio |
+| **REF-10** | Portabilidad | App nativa/hibrida (Android e iOS). | Medio |
 
 ---
 
