@@ -6,9 +6,17 @@
 Integrantes del proyecto:
 
 ->Ariadna Espejo Torres       | Product Owner | Historias de Usuario, Archivo Arquitectura.md
+
+
 ->Benjamin Figueroa Matamala  | Scrum Master  | Entidades del Dominio, Diseño Arquitectonico 
+
+
 ->Cristofer Riveros Gapuz     | Developer     | Mockups
+
+
 ->Ignacio Cortés Catrín       | Developer     | Mockups
+
+
 ->Patricio Rivadeneira Alfaro | Developer     | Requisitos Extrafuncionales, 
 
 # 📝 *Descripción*
