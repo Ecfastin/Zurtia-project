@@ -39,7 +39,7 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 * **Módulo de Caché de Imágenes**
     * **Responsabilidad:** Optimización de entrega de miniaturas (thumbnails) para minimizar el consumo de datos en la red del supermercado.
 
--> Justificación de la Coherencia Arquitectónica:
+# -> Justificación de la Coherencia Arquitectónica:
 
 * Independencia de Módulos: Si el sistema de precios del supermercado cambia, solo necesitas modificar el Módulo de Integración de Precios, sin tocar la App móvil ni el sistema de login.
 
