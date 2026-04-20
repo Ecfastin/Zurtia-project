@@ -39,7 +39,7 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
    
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-# Link [Figma](https://www.figma.com/make/aAIRKnciGUOXBuuTbACLc1/Zurita-mobile-app?fullscreen=1&t=8TckK40UyAUbCx9u-1)
+# Link [Figma](https://edit-agent-16874125.figma.site)
 
 # Link [Decisión Arquitectónica](DiseñoArquitectonico.md)
 
