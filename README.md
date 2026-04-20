@@ -16,7 +16,7 @@
 
 | ID | Nombre de la Historia de Usuario | Issue | 
 | :--- | :--- | :--- | :--- |
-| **HU11** | Orden de pasillo | [#11](https://github.com/tu-usuario/tu-repo/issues/11) |
+| **HU11** | Orden de pasillo | [#11](https://github.com/tu-usuario/tu-repo/issues/11) | 
 | **HU12** | Escaneo de código de barras | [#12](https://github.com/tu-usuario/tu-repo/issues/12) | 
 | **HU13** | Visualización de miniatura de producto | [#13](https://github.com/tu-usuario/tu-repo/issues/13) | 
 | **HU14** | Gestión de productos sustitutos | [#14](https://github.com/tu-usuario/tu-repo/issues/14) | 
