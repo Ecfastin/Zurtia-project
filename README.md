@@ -12,6 +12,25 @@
 | **Ignacio Cortés Catrín** | Developer | Mockups, prompts |
 | **Patricio Rivadeneira Alfaro** | Developer | Requisitos Extrafuncionales |
 
+## 📋 Backlog de Historias de Usuario
+
+| ID | Nombre de la Historia de Usuario | Issue | Etiquetas |
+| :--- | :--- | :--- | :--- |
+| **HU11** | Orden de pasillo (Ascendente/Descendente) | [#11](https://github.com/tu-usuario/tu-repo/issues/11) | `Operación` |
+| **HU12** | Escaneo de código de barras | [#12](https://github.com/tu-usuario/tu-repo/issues/12) | `Core` |
+| **HU13** | Visualización de miniatura de producto | [#13](https://github.com/tu-usuario/tu-repo/issues/13) | `UX/UI` |
+| **HU14** | Gestión de productos sustitutos | [#14](https://github.com/tu-usuario/tu-repo/issues/14) | `Negocio` |
+| **HU15** | Protocolo de marcado de Quiebre | [#15](https://github.com/tu-usuario/tu-repo/issues/15) | `Stock` |
+| **HU16** | Pantalla de detalle del producto | [#16](https://github.com/tu-usuario/tu-repo/issues/16) | `UX/UI` |
+| **HU17** | Registro de precios y unidades | [#17](https://github.com/tu-usuario/tu-repo/issues/17) | `Finanzas` |
+| **HU18** | Vista previa de preparación | [#18](https://github.com/tu-usuario/tu-repo/issues/18) | `Operación` |
+| **HU19** | Contador de avance en tiempo real | [#19](https://github.com/tu-usuario/tu-repo/issues/19) | `Feedback` |
+| **HU20** | Resumen de cierre de pedido | [#20](https://github.com/tu-usuario/tu-repo/issues/20) | `Flujo` |
+| **HU21** | Respaldo fotográfico obligatorio | [#21](https://github.com/tu-usuario/tu-repo/issues/21) | `Gerencia` |
+| **HU22** | Control de bultos y cadena de frío | [#22](https://github.com/tu-usuario/tu-repo/issues/22) | `Gerencia` |
+| **HU26** | Login seguro con JWT | [#26](https://github.com/tu-usuario/tu-repo/issues/26) | `Seguridad` |
+
+---
 # 📝 *Descripción*
 
 Zurita es un Software hecho para cubrir las necesidades de Los principales supermercados a nivel pais para que el proceso de picking sea facil, controlado y eficaz tanto para gerencia, coordinacion y pickers. Zurtia se enriquecio en base a varios problemas a la hora de iniciar, realizar y finalizar pedidos, resultando en la solucion mas conveniente capaz de adaptarse sin dañar el ecosistema propio de las grandes cadenas 😊
