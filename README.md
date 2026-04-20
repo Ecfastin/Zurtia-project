@@ -16,19 +16,16 @@
 
 | ID | Nombre de la Historia de Usuario | Issue |
 | :--- | :--- | :--- |
-| **HU11** | Chat multimedia | [#2](https://github.com/Ecfastin/Zurtia-project/issues/8) |
-| **HU12** | Cola de asignación automática | [#3](https://github.com/Ecfastin/Zurtia-project/issues/3) |
-| **HU13** | Visualización de miniatura de producto | [#13](https://github.com/tu-usuario/tu-repo/issues/13) |
-| **HU14** | Gestión de productos sustitutos | [#14](https://github.com/tu-usuario/tu-repo/issues/14) |
-| **HU15** | Protocolo de marcado de Quiebre | [#15](https://github.com/tu-usuario/tu-repo/issues/15) |
-| **HU16** | Pantalla de detalle del producto | [#16](https://github.com/tu-usuario/tu-repo/issues/16) |
-| **HU17** | Registro de precios y unidades | [#17](https://github.com/tu-usuario/tu-repo/issues/17) |
-| **HU18** | Orden de pasillo (Ascendente/Descendente) | [#18](https://github.com/tu-usuario/tu-repo/issues/18) |
-| **HU19** | Contador de avance en tiempo real | [#19](https://github.com/tu-usuario/tu-repo/issues/19) |
-| **HU20** | Resumen de cierre de pedido | [#20](https://github.com/tu-usuario/tu-repo/issues/20) |
-| **HU21** | Respaldo fotográfico obligatorio | [#21](https://github.com/tu-usuario/tu-repo/issues/21) |
-| **HU22** | Control de bultos y cadena de frío | [#22](https://github.com/tu-usuario/tu-repo/issues/22) |
-| **HU26** | Login seguro con JWT (Cuentas Personales/Institucionales) | [#26](https://github.com/tu-usuario/tu-repo/issues/26) |
+| **HU2** | Chat multimedia | [#2](https://github.com/Ecfastin/Zurtia-project/issues/8) |
+| **HU3** | Cola de asignación automática | [#3](https://github.com/Ecfastin/Zurtia-project/issues/3) |
+| **HU4** | Checklist de empaque | [#4](https://github.com/Ecfastin/Zurtia-project/issues/4) |
+| **HU5** | Evidencia fotográfica y bultos | [#5](https://github.com/Ecfastin/Zurtia-project/issues/5) |
+| **HU6** | Protocolos obligatorios de quiebre | [#6](https://github.com/Ecfastin/Zurtia-project/issues/6) |
+| **HU7** | Pasillos y góndola | [#7](https://github.com/Ecfastin/Zurtia-project/issues/8) |
+| **HU8** | Tiempo transcurrido | [#8](https://github.com/Ecfastin/Zurtia-project/issues/9) |
+| **HU9** | Imagen en miniatura de cada artículo | [#9](https://github.com/Ecfastin/Zurtia-project/issues/10) |
+| **HU10** | Vista detallada del producto | [#10](https://github.com/Ecfastin/Zurtia-project/issues/11) |
+| **HU11** | Inicio sesión | [11](https://github.com/Ecfastin/Zurtia-project/issues/14) |
 
 ---
 
