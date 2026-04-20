@@ -16,16 +16,16 @@
 
 | ID | Nombre de la Historia de Usuario | Issue |
 | :--- | :--- | :--- |
-| **HU2** | Chat multimedia | [#2](https://github.com/Ecfastin/Zurtia-project/issues/8) |
-| **HU3** | Cola de asignación automática | [#3](https://github.com/Ecfastin/Zurtia-project/issues/3) |
-| **HU4** | Checklist de empaque | [#4](https://github.com/Ecfastin/Zurtia-project/issues/4) |
-| **HU5** | Evidencia fotográfica y bultos | [#5](https://github.com/Ecfastin/Zurtia-project/issues/5) |
-| **HU6** | Protocolos obligatorios de quiebre | [#6](https://github.com/Ecfastin/Zurtia-project/issues/6) |
-| **HU7** | Pasillos y góndola | [#7](https://github.com/Ecfastin/Zurtia-project/issues/8) |
-| **HU8** | Tiempo transcurrido | [#8](https://github.com/Ecfastin/Zurtia-project/issues/9) |
-| **HU9** | Imagen en miniatura de cada artículo | [#9](https://github.com/Ecfastin/Zurtia-project/issues/10) |
-| **HU10** | Vista detallada del producto | [#10](https://github.com/Ecfastin/Zurtia-project/issues/11) |
-| **HU11** | Inicio sesión | [11](https://github.com/Ecfastin/Zurtia-project/issues/14) |
+| **HU1** | Chat multimedia | [#1](https://github.com/Ecfastin/Zurtia-project/issues/8) |
+| **HU2** | Cola de asignación automática | [#2](https://github.com/Ecfastin/Zurtia-project/issues/3) |
+| **HU3** | Checklist de empaque | [#3](https://github.com/Ecfastin/Zurtia-project/issues/4) |
+| **HU4** | Evidencia fotográfica y bultos | [#4](https://github.com/Ecfastin/Zurtia-project/issues/5) |
+| **HU5** | Protocolos obligatorios de quiebre | [#5](https://github.com/Ecfastin/Zurtia-project/issues/6) |
+| **HU6** | Pasillos y góndola | [#6](https://github.com/Ecfastin/Zurtia-project/issues/8) |
+| **HU7** | Tiempo transcurrido | [#7](https://github.com/Ecfastin/Zurtia-project/issues/9) |
+| **HU8** | Imagen en miniatura de cada artículo | [#8](https://github.com/Ecfastin/Zurtia-project/issues/10) |
+| **HU9** | Vista detallada del producto | [#9](https://github.com/Ecfastin/Zurtia-project/issues/11) |
+| **HU10** | Inicio sesión | [10](https://github.com/Ecfastin/Zurtia-project/issues/14) |
 
 ---
 
