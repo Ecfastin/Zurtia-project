@@ -25,7 +25,7 @@
 | **HU7** | Tiempo transcurrido | [#9](https://github.com/Ecfastin/Zurtia-project/issues/9) |
 | **HU8** | Imagen en miniatura de cada artículo | [#10](https://github.com/Ecfastin/Zurtia-project/issues/10) |
 | **HU9** | Vista detallada del producto | [#11](https://github.com/Ecfastin/Zurtia-project/issues/11) |
-| **HU10** | Inicio sesión | [14](https://github.com/Ecfastin/Zurtia-project/issues/14) |
+| **HU10** | Inicio sesión | [#14](https://github.com/Ecfastin/Zurtia-project/issues/14) |
 
 ---
 # 📝 *Descripción*
