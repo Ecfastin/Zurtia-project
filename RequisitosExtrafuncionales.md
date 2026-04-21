@@ -16,7 +16,7 @@ Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcF
 | **REF-08** | Testabilidad | Cobertura de pruebas unitarias del 70%. | Alta |
 | **REF-09** | Escalabilidad | Soporte para 100 pickers simultaneos. | Medio |
 | **REF-10** | Portabilidad | App nativa/hibrida (Android e iOS). | Medio |
-
+| **REF-11** | Tolerancia a Fallos | El módulo de estado local debe preservar el progreso del pedido activo ante fallos de conectividad, sin pérdida de datos escaneados. | Alta
 ---
 
 ## 2. Relacion con Decisiones de Arquitectura
