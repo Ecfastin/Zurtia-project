@@ -14,7 +14,7 @@ Este documento detalla los requisitos extrafuncionales del sistema **Zurita (EcF
 | **REF-06** | Interoperabilidad | Integracion mediante REST estandarizados. | Alta |
 | **REF-07** | Recuperabilidad | Retoma estado del pedido en max. 10 seg. | Alta |
 | **REF-08** | Testabilidad | Cobertura de pruebas unitarias del 70%. | Alta |
-| **REF-09** | Escalabilidad | Soporte para 50 pickers simultaneos. | Medio |
+| **REF-09** | Escalabilidad | Soporte para 100 pickers simultaneos. | Medio |
 | **REF-10** | Portabilidad | App nativa/hibrida (Android e iOS). | Medio |
 
 ---
