@@ -1,0 +1,26 @@
+{
+  "name": "zurtia-project",
+  "version": "1.0.0",
+  "description": "-> Un sistema de Pickeo para todas las empresas de supermercados.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ecfastin/Zurtia-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ecfastin/Zurtia-project/issues"
+  },
+  "homepage": "https://github.com/Ecfastin/Zurtia-project#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "express": "^5.2.1"
+  }
+}
