@@ -1,0 +1,100 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Zurtia API - HU14 Login",
+    "collectionId": "zurtia-hu14",
+    "dateExported": "2026-06-01",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "hu14-01",
+            "colId": "zurtia-hu14",
+            "name": "HU14-01 Login exitoso picker",
+            "method": "POST",
+            "url": "http://localhost:3000/login",
+            "headers": [{"name": "Content-Type", "value": "application/json"}],
+            "body": {"type": "json", "raw": "{\"correo\":\"picker@zurtia.cl\",\"password\":\"1234\"}"}
+        },
+        {
+        "_id": "hu14-02",
+        "colId": "zurtia-hu14",
+        "name": "HU14-02 Login exitoso supervisor",
+        "method": "POST",
+        "url": "http://localhost:3000/login",
+        "headers": [{"name": "Content-Type", "value": "application/json"}],
+        "body": {"type": "json", "raw": "{\"correo\":\"supervisor@zurtia.cl\",\"password\":\"abcd\"}"}
+        },
+        {
+        "_id": "hu14-03",
+        "colId": "zurtia-hu14",
+        "name": "HU14-03 Contraseña incorrecta",
+        "method": "POST",
+        "url": "http://localhost:3000/login",
+        "headers": [{"name": "Content-Type", "value": "application/json"}],
+        "body": {"type": "json", "raw": "{\"correo\":\"picker@zurtia.cl\",\"password\":\"wrong\"}"}
+        },
+        {
+        "_id": "hu14-04",
+        "colId": "zurtia-hu14",
+        "name": "HU14-04 Correo no registrado",
+        "method": "POST",
+        "url": "http://localhost:3000/login",
+        "headers": [{"name": "Content-Type", "value": "application/json"}],
+        "body": {"type": "json", "raw": "{\"correo\":\"noexiste@zurtia.cl\",\"password\":\"1234\"}"}
+        },
+        {
+            "_id": "hu14-05",
+            "colId": "zurtia-hu14",
+            "name": "HU14-05 Falta password",
+            "method": "POST",
+            "url": "http://localhost:3000/login",
+            "headers": [{"name": "Content-Type", "value": "application/json"}],
+            "body": {"type": "json", "raw": "{\"correo\":\"picker@zurtia.cl\"}"}
+        },
+        {
+            "_id": "hu14-06",
+            "colId": "zurtia-hu14",
+            "name": "HU14-06 Falta correo",
+            "method": "POST",
+            "url": "http://localhost:3000/login",
+            "headers": [{"name": "Content-Type", "value": "application/json"}],
+            "body": {"type": "json", "raw": "{\"password\":\"1234\"}"}
+        },
+        {
+            "_id": "hu14-07",
+            "colId": "zurtia-hu14",
+            "name": "HU14-07 Body vacio",
+            "method": "POST",
+            "url": "http://localhost:3000/login",
+            "headers": [{"name": "Content-Type", "value": "application/json"}],
+            "body": {"type": "json", "raw": "{}"}
+        },
+        {
+            "_id": "hu14-08",
+            "colId": "zurtia-hu14",
+            "name": "HU14-08 Password vacio",
+            "method": "POST",
+            "url": "http://localhost:3000/login",
+            "headers": [{"name": "Content-Type", "value": "application/json"}],
+            "body": {"type": "json", "raw": "{\"correo\":\"picker@zurtia.cl\",\"password\":\"\"}"}
+        },
+        {
+            "_id": "hu14-09",
+            "colId": "zurtia-hu14",
+            "name": "HU14-09 Correo vacio",
+            "method": "POST",
+            "url": "http://localhost:3000/login",
+            "headers": [{"name": "Content-Type", "value": "application/json"}],
+            "body": {"type": "json", "raw": "{\"correo\":\"\",\"password\":\"1234\"}"}
+        },
+        {
+            "_id": "hu14-10",
+            "colId": "zurtia-hu14",
+            "name": "HU14-10 Correo formato invalido",
+            "method": "POST",
+            "url": "http://localhost:3000/login",
+            "headers": [{"name": "Content-Type", "value": "application/json"}],
+            "body": {"type": "json", "raw": "{\"correo\":\"noesuncorreo\",\"password\":\"1234\"}"}
+        }
+    ]
+}

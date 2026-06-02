@@ -1,6 +1,6 @@
-const express      = require('express');
-const db           = require('./db');
-const swaggerUi    = require('swagger-ui-express');
+const express = require('express');
+const db = require('./db');
+const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const app = express();
@@ -8,46 +8,22 @@ app.use(express.json());
 
 const swaggerSpec = swaggerJsdoc({
     definition: {
-    openapi: '3.0.0',
-    info: { title: 'API Cursos', version: '1.0.0',
-            description: 'API para gestionar cursos academicos' }
+        openapi: '3.0.0',
+        info: {
+            title: 'API Zurtia',
+            version: '1.0.0',
+            description: 'API para sistema de Pickeo Zurtia'
+        }
     },
     apis: ['./index.js']
 });
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-/**
- * @swagger
- * /cursos:
- *   get:
- *     summary: Lista todos los cursos
- *     responses:
- *       200:
- *         description: Array de cursos
- */
 app.get('/cursos', (req, res) => {
-  res.json(db.prepare('SELECT * FROM cursos').all());
+    res.json(db.prepare('SELECT * FROM cursos').all());
 });
 
-/**
- * @swagger
- * /cursos:
- *   post:
- *     summary: Crea un nuevo curso
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               nombre:     { type: string }
- *               instructor: { type: string }
- *               creditos:   { type: integer }
- *     responses:
- *       201:
- *         description: Curso creado
- */
 app.post('/cursos', (req, res) => {
     const { nombre, instructor, creditos } = req.body;
     const r = db.prepare(
@@ -56,32 +32,6 @@ app.post('/cursos', (req, res) => {
     res.status(201).json({ id: r.lastInsertRowid, nombre, instructor, creditos });
 });
 
-/**
- * @swagger
- * /cursos/{id}:
- *   put:
- *     summary: Modifica un curso
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               nombre:     { type: string }
- *               instructor: { type: string }
- *               creditos:   { type: integer }
- *     responses:
- *       200:
- *         description: Curso actualizado
- *       404:
- *         description: No encontrado
- */
 app.put('/cursos/:id', (req, res) => {
     const { nombre, instructor, creditos } = req.body;
     const i = db.prepare(
@@ -91,26 +41,34 @@ app.put('/cursos/:id', (req, res) => {
     res.json({ mensaje: 'Curso actualizado' });
 });
 
-/**
- * @swagger
- * /cursos/{id}:
- *   delete:
- *     summary: Elimina un curso
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Curso eliminado
- *       404:
- *         description: No encontrado
- */
 app.delete('/cursos/:id', (req, res) => {
     const i = db.prepare('DELETE FROM cursos WHERE id=?').run(req.params.id);
     if (i.changes === 0) return res.status(404).json({ error: 'Curso no encontrado' });
     res.json({ mensaje: 'Curso eliminado' });
 });
 
-app.listen(3000, () => console.log('API en http://localhost:3000'));
+app.post('/login', (req, res) => {
+    const { correo, password } = req.body;
+    if (!correo || !password) {
+        return res.status(400).json({ error: 'Correo y contraseña son requeridos' });
+    }
+    const usuario = db.prepare('SELECT * FROM usuarios WHERE correo = ?').get(correo);
+    if (!usuario) {
+        return res.status(401).json({ error: 'Correo no registrado' });
+    }
+    if (usuario.password !== password) {
+        return res.status(401).json({ error: 'Contraseña incorrecta' });
+    }
+    res.json({
+        mensaje: 'Login exitoso',
+        usuario: {
+            id: usuario.id,
+            nombre: usuario.nombre,
+            correo: usuario.correo,
+            rol: usuario.rol
+        }
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`API escuchando en puerto ${PORT}`));
