@@ -30,7 +30,6 @@ db.exec(`
         imagen_url TEXT
     )
 `);
-
 const usuariosExistentes = db.prepare('SELECT COUNT(*) as total FROM usuarios').get();
 if (usuariosExistentes.total === 0) {
     db.prepare(`INSERT INTO usuarios (nombre, correo, password, rol) VALUES (?, ?, ?, ?)`).run('Juan Pérez', 'picker@zurtia.cl', '1234', 'picker');

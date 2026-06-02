@@ -1,0 +1,100 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Zurtia API - HU08 Productos",
+    "collectionId": "zurtia-hu08",
+    "dateExported": "2026-06-02",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+    {
+        "_id": "hu08-01",
+        "colId": "zurtia-hu08",
+        "name": "HU08-01 Listar todos los productos",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-02",
+        "colId": "zurtia-hu08",
+        "name": "HU08-02 Verificar orden categorias Secos primero",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-03",
+        "colId": "zurtia-hu08",
+        "name": "HU08-03 Verificar Congelados al final",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-04",
+        "colId": "zurtia-hu08",
+        "name": "HU08-04 Verificar pasillo descendente en Secos",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-05",
+        "colId": "zurtia-hu08",
+        "name": "HU08-05 Verificar campo pasillo presente",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-06",
+        "colId": "zurtia-hu08",
+        "name": "HU08-06 Verificar campo gondola presente",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-07",
+        "colId": "zurtia-hu08",
+        "name": "HU08-07 Verificar campo imagen_url presente",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-08",
+        "colId": "zurtia-hu08",
+        "name": "HU08-08 Verificar campo categoria presente",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-09",
+        "colId": "zurtia-hu08",
+        "name": "HU08-09 Verificar retorna status 200",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    },
+    {
+        "_id": "hu08-10",
+        "colId": "zurtia-hu08",
+        "name": "HU08-10 Verificar gondola ascendente mismo pasillo",
+        "method": "GET",
+        "url": "http://localhost:3000/productos",
+        "headers": [],
+        "body": {"type": "none"}
+    }
+    ]
+}

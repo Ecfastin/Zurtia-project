@@ -69,6 +69,39 @@ app.post('/login', (req, res) => {
         }
     });
 });
+// ─── HU #8: Productos con ubicación ──────────────────────────────────────────
+/**
+ * @swagger
+ * /productos:
+ *   get:
+ *     summary: Lista productos con ubicación exacta (pasillo y góndola)
+ *     responses:
+ *       200:
+ *         description: Lista de productos ordenados por categoría y pasillo
+ *       404:
+ *         description: No hay productos
+ */
+app.get('/productos', (req, res) => {
+    const productos = db.prepare(`
+        SELECT id, nombre, categoria, pasillo, gondola, imagen_url
+        FROM productos
+        ORDER BY
+            CASE categoria
+                WHEN 'Secos'             THEN 1
+                WHEN 'Frutas y Verduras' THEN 2
+                WHEN 'Refrigerados'      THEN 3
+                WHEN 'Congelados'        THEN 4
+                ELSE 5
+            END,
+            pasillo DESC,
+            gondola ASC
+    `).all();
 
+    if (productos.length === 0) {
+        return res.status(404).json({ error: 'No hay productos disponibles' });
+    }
+
+    res.json(productos);
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API escuchando en puerto ${PORT}`));
