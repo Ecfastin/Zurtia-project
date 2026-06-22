@@ -127,6 +127,79 @@ Como picker, quiero iniciar sesión con mi correo electrónico personal para acc
 
 ---
 
+## 🧪 Casos de Prueba API-Productos (HU08)
+
+- [HU08-01 Listar todos los productos](#hu08-01-listar-todos-los-productos)
+- [HU08-02 Secos primero](#hu08-02-verificar-orden-categorías-secos-primero)
+- [HU08-03 Congelados al final](#hu08-03-verificar-congelados-al-final)
+- [HU08-04 Pasillo descendente en Secos](#hu08-04-verificar-pasillo-descendente-en-secos)
+- [HU08-05 Campo pasillo](#hu08-05-verificar-campo-pasillo-presente)
+- [HU08-06 Campo góndola](#hu08-06-verificar-campo-góndola-presente)
+- [HU08-07 Campo imagen_url](#hu08-07-verificar-campo-imagen-url-presente)
+- [HU08-08 Campo categoría](#hu08-08-verificar-campo-categoría-presente)
+- [HU08-09 Status 200](#hu08-09-verificar-retorna-status-200)
+- [HU08-10 Góndola ascendente](#hu08-10-verificar-góndola-ascendente-mismo-pasillo)
+
+---
+
+## HU08-01 Listar todos los productos
+Se obtiene correctamente el listado completo de productos con su información de ubicación.
+**Resultado esperado:** HTTP 200 — Array con todos los productos
+
+---
+
+## HU08-02 Verificar orden categorías — Secos primero
+Se valida que la categoría "Secos" aparece primero en la lista de productos.
+**Resultado esperado:** HTTP 200 — productos[0].categoria === "Secos"
+
+---
+
+## HU08-03 Verificar Congelados al final
+Se valida que los productos "Congelados" aparecen al final de la lista.
+**Resultado esperado:** HTTP 200 — Último producto con categoria === "Congelados"
+
+---
+
+## HU08-04 Verificar pasillo descendente en Secos
+Se valida que los productos de categoría "Secos" estén ordenados por pasillo en orden descendente.
+**Resultado esperado:** HTTP 200 — Pasillos en orden descendente dentro de Secos
+
+---
+
+## HU08-05 Verificar campo pasillo presente
+Se valida que todos los productos incluyen el campo pasillo.
+**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo pasillo
+
+---
+
+## HU08-06 Verificar campo góndola presente
+Se valida que todos los productos incluyen el campo góndola.
+**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo gondola
+
+---
+
+## HU08-07 Verificar campo imagen_url presente
+Se valida que todos los productos incluyen el campo imagen_url.
+**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo imagen_url
+
+---
+
+## HU08-08 Verificar campo categoría presente
+Se valida que todos los productos incluyen el campo categoría.
+**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo categoria
+
+---
+
+## HU08-09 Verificar retorna status 200
+Se valida que la API responde correctamente.
+**Resultado esperado:** HTTP 200
+
+---
+
+## HU08-10 Verificar góndola ascendente mismo pasillo
+Se valida que dentro del mismo pasillo los productos se ordenan por góndola en forma ascendente.
+**Resultado esperado:** HTTP 200 — Góndolas en orden ascendente dentro del mismo pasillo
+
 ## 🧪 Casos de Prueba API-Login (HU14)
 
 - [HU14-01 Login exitoso picker](#hu14-01-login-exitoso-picker)
