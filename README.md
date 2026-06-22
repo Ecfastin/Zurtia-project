@@ -86,7 +86,10 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 | Entidades del Dominio | EntidadesDelDominio.md |
 | Requisitos Extrafuncionales | RequisitosExtrafuncionales.md |
 | Impact Analysis | impact_analysis.md |
-| Especificación HU03 | EspecificacionHU03.md |
+| Especificación HU | EspecificacionHU03.md |
+| Diagrama de despliegue y comp.| |
+| Diagrama de componentes  | |
+Diagrama de secuencia   | |
 | Deuda Técnica | DeudaTecnica.md |
 ---
 
