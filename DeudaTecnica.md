@@ -1,161 +1,143 @@
-# Deuda Técnica — Zurtia
+💥 Deuda Técnica — Zurtia
+Code Smells Identificados
+1. Rutas de dominio incorrecto (/cursos)
 
-## Code Smells Identificados
+Archivo: index.js
 
-### 1. Rutas de dominio incorrecto (`/cursos`)
+Descripción:
+El archivo principal contiene endpoints CRUD para /cursos (GET, POST, PUT, DELETE) que no pertenecen al dominio actual del sistema de pickeo. Estas rutas son remanentes de un proyecto anterior.
 
-**Archivo:** `index.js`
+Impacto:
 
-**Descripción:**
-El archivo principal contiene endpoints CRUD para `/cursos` (`GET`, `POST`, `PUT`, `DELETE`) que no tienen relación con el dominio del sistema de pickeo. Estas rutas son remanentes de un proyecto anterior y representan código muerto en la aplicación.
+Código muerto en la aplicación.
+Confusión para nuevos desarrolladores.
+Contaminación de la documentación Swagger.
 
-**Impacto:**
+Solución:
+Eliminar las rutas /cursos y todas sus referencias.
 
-* Confusión para nuevos desarrolladores.
-* Superficie de ataque innecesaria.
-* Contaminación de la documentación Swagger.
+2. Contraseñas almacenadas en texto plano (CRÍTICO)
 
-**Solución:**
-Eliminar las rutas `/cursos` y sus referencias en la base de datos.
+Archivo: index.js — POST /login
 
----
+Descripción:
+Las contraseñas se almacenan y comparan directamente sin ningún tipo de hashing (usuario.password !== password).
 
-### 2. Contraseñas almacenadas en texto plano
+Impacto:
 
-**Archivo:** `index.js` — endpoint `POST /login`
+Vulnerabilidad de seguridad crítica.
+Exposición total de credenciales si la base de datos es comprometida.
 
-**Descripción:**
-La comparación de contraseñas se realiza directamente contra el valor almacenado en la base de datos sin ningún tipo de hash (`usuario.password !== password`). Esto implica que las contraseñas están guardadas en texto plano.
+Solución:
+Implementar hashing con bcrypt para almacenar y validar contraseñas.
 
-**Impacto:**
+3. Sin autenticación ni autorización (JWT ausente)
 
-* Vulnerabilidad de seguridad crítica.
-* Si la base de datos es expuesta, todas las contraseñas quedan comprometidas.
+Archivo: index.js
 
-**Solución:**
-Implementar hashing con `bcrypt` para almacenar y comparar contraseñas.
+Descripción:
+El sistema no implementa tokens de autenticación. Los endpoints como GET /productos son accesibles sin validación.
 
----
+Impacto:
 
-### 3. Sin autenticación ni autorización (JWT ausente)
+Acceso no autorizado a datos del sistema.
+Falta de control de usuarios y roles.
 
-**Archivo:** `index.js`
+Solución:
+Implementar JWT y middleware de autenticación para proteger rutas.
 
-**Descripción:**
-El endpoint de login retorna los datos del usuario pero no genera ningún token de sesión. Los demás endpoints, como `GET /productos`, son accesibles sin autenticación.
+4. Falta de validación de datos de entrada
 
-**Impacto:**
+Archivo: index.js
 
-* Acceso no autorizado a información del sistema.
-* Ausencia de control de roles y permisos.
+Descripción:
+No existe validación de los datos recibidos en las solicitudes HTTP.
 
-**Solución:**
-Implementar JWT en el login y proteger los endpoints mediante middleware de autenticación.
+Impacto:
 
----
+Inconsistencias en la base de datos.
+Posibles errores en la ejecución del sistema.
 
-### 4. Sin validación de datos de entrada
+Solución:
+Implementar validación con express-validator o Joi.
 
-**Archivo:** `index.js`
+5. Manejo de errores no centralizado
 
-**Descripción:**
-No se valida el formato ni el tipo de los datos recibidos en las solicitudes HTTP. Esto permite que ingresen datos incompletos o incorrectos al sistema.
+Archivo: index.js
 
-**Impacto:**
+Descripción:
+No existe un middleware global de manejo de errores.
 
-* Riesgo de inconsistencias en la base de datos.
-* Posibles errores durante la ejecución de la aplicación.
+Impacto:
 
-**Solución:**
-Implementar validación utilizando librerías como `express-validator` o `Joi`.
+Difícil diagnóstico de errores.
+Respuestas inconsistentes hacia el cliente.
 
----
+Solución:
+Implementar un middleware global de manejo de errores.
 
-### 5. Manejo de errores genérico
+6. Arquitectura monolítica en un solo archivo
 
-**Archivo:** `index.js`
+Archivo: index.js
 
-**Descripción:**
-No existe un middleware global de manejo de errores. Los errores inesperados retornan respuestas genéricas sin una gestión centralizada.
+Descripción:
+Toda la lógica del sistema (rutas, lógica de negocio y acceso a datos) está concentrada en un único archivo.
 
-**Impacto:**
+Impacto:
 
-* Dificultad para diagnosticar problemas.
-* Respuestas inconsistentes para el cliente.
+Baja mantenibilidad.
+Difícil escalabilidad y testing.
 
-**Solución:**
-Agregar un middleware global de errores.
+Solución:
+Separar la aplicación en capas:
 
----
+Routes
+Controllers
+Services
+Repository
+📊 Tabla de Deuda Técnica
+ID	Descripción	Prioridad	Esfuerzo
+DT-01	Eliminar rutas /cursos	Alta	30 min
+DT-02	Hash de contraseñas con bcrypt	Alta	2h
+DT-03	Implementar autenticación con JWT	Alta	4h
+DT-04	Validación de inputs	Media	2h
+DT-05	Middleware de errores	Media	1h
+DT-06	Separar arquitectura en capas	Media	3h
+🚀 Mejoras Futuras (Roadmap del Sistema)
+📦 Paginación de productos
 
-### 6. Lógica de negocio concentrada en un único archivo
+Implementar paginación en GET /productos para evitar respuestas demasiado grandes cuando el inventario crezca.
 
-**Archivo:** `index.js`
-
-**Descripción:**
-La lógica de negocio, acceso a datos y definición de rutas se encuentran concentradas en un único archivo.
-
-**Impacto:**
-
-* Baja mantenibilidad.
-* Dificultad para realizar pruebas.
-* Escalabilidad limitada.
-
-**Solución:**
-Separar la aplicación en capas (`Routes`, `Controllers`, `Services` y `Repository`).
-
----
-
-## Deuda Técnica
-
-| ID    | Descripción                                                         | Prioridad | Esfuerzo Estimado |
-| ----- | ------------------------------------------------------------------- | --------- | ----------------- |
-| DT-01 | Eliminar rutas `/cursos` que no pertenecen al dominio               | Alta      | 30 min            |
-| DT-02 | Implementar hashing de contraseñas con bcrypt                       | Alta      | 2 horas           |
-| DT-03 | Implementar autenticación con JWT                                   | Alta      | 4 horas           |
-| DT-04 | Agregar validación de entradas con express-validator                | Media     | 2 horas           |
-| DT-05 | Implementar middleware global de manejo de errores                  | Media     | 1 hora            |
-| DT-06 | Separar rutas en archivos independientes                            | Baja      | 2 horas           |
-| DT-07 | Agregar variables de entorno para credenciales y puerto             | Alta      | 1 hora            |
-| DT-08 | Implementar sistema de logs de acceso y errores                     | Baja      | 2 horas           |
-| DT-09 | Aplicar arquitectura por capas (Controllers, Services y Repository) | Media     | 3 horas           |
-
----
-
-## Mejoras Futuras
-
-### Paginación de Productos
-
-Implementar paginación en `GET /productos` para evitar respuestas excesivamente grandes cuando aumente el inventario.
-
-### Filtros Avanzados
+🔎 Filtros avanzados
 
 Permitir búsquedas por:
 
-* Categoría
-* Pasillo
-* Ubicación
-* Nombre del producto
+Categoría
+Pasillo
+Ubicación
+Nombre del producto
 
 Esto mejorará la eficiencia del proceso de pickeo.
 
-### Refresh Tokens
+🔐 Refresh Tokens
 
-Incorporar refresh tokens para mantener sesiones seguras sin requerir autenticaciones frecuentes.
+Incorporar refresh tokens para mantener sesiones seguras sin necesidad de reautenticación constante.
 
-### Migración a ORM
+🧱 Migración a ORM
 
 Reemplazar consultas SQL directas por un ORM como:
 
-* Sequelize
-* Prisma
+Sequelize
+Prisma
 
 Beneficios:
 
-* Mejor mantenibilidad.
-* Menor riesgo de errores en consultas.
-* Mayor productividad del equipo.
+Mejor mantenibilidad.
+Menos errores en queries.
+Mayor productividad.
+📦 Dockerización
 
+Contenerizar la aplicación para asegurar consistencia entre entornos de desarrollo, pruebas y producción.
 ### Dockerización
 
 Contenerizar la aplicación mediante Docker para garantizar consistencia entre entornos de desarrollo, pruebas y despliegue.
