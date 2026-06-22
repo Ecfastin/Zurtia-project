@@ -22,11 +22,11 @@
 ### Entrega 3
 | Nombre              | Rol           | Actividad |
 |---------------------|---------------|-----------|
-| **Ariadna Espejo Torres**| Scrum Master  | 1.1- 3.1 |
-|**Benjamin Figueroa Matamala**| Arquitecto |1.1-4.1  |
-| **Cristofer Riveros Gapuz**| Quality assurance     |1.1- 2.1  |
-| **Ignacio Cortés Catrín**    | Developer  |3.1- 2.1- 1.1  |
-| **Patricio Rivadeneira Alfaro** | Technical Lead | 4.1- 2.1- 1.1 |
+| **Ariadna Espejo Torres**| Scrum Master  | 5.2 |
+|**Benjamin Figueroa Matamala**| Arquitecto | 5.3-5.8 |
+| **Cristofer Riveros Gapuz**| Quality assurance     |5.4-5.1  |
+| **Ignacio Cortés Catrín**    | Developer  |5.5-5.9 |
+| **Patricio Rivadeneira Alfaro** | Technical Lead | 5.6-5.1 |
 
 ## 📋 Backlog de Historias de Usuario
 
