@@ -48,3 +48,100 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 * Escalabilidad: Al ser REST, podemos tener a 100 pickers conectados simultáneamente, ya que cada petición es independiente y segura gracias al JWT.
 
 * Resiliencia: El Módulo de Gestión de Estado local en la App permite que, si el servidor falla por un momento, el picker no pierda lo que ya escaneó.
+
+---
+
+## 🏗️ Modelado de Diseño (Diagramas)
+
+Para complementar la arquitectura REST/SOA explicada arriba, ahora se presentan los diagramas lógicos y físicos del sistema.
+
+### 1. Diagrama de Despliegue
+Se conectan los componentes físicos y lógicos de la app y qué protocolos se usan en la red.
+
+```mermaid
+graph TD
+    subgraph CelularPicker ["Celular del Picker"]
+        FrontendApp["Frontend Mobile App"]
+    end
+
+    subgraph ServidorBackend ["Servidor Backend (Node.js)"]
+        APICentral["API Central (picking y validación)"]
+        ModuloAuth["Capa de Servicios (Auth JWT)"]
+        Adaptador["Adaptador de Inventario"]
+    end
+
+    subgraph ServidorBD ["Servidor BD Central"]
+        DBLocal[("Base de Datos Central")]
+    end
+
+    subgraph ServidorExterno ["Servidor Externo"]
+        APISupermercado["API Supermercado"]
+    end
+
+    FrontendApp -->|HTTP/HTTPS| APICentral
+    APICentral <--> ModuloAuth
+    APICentral -->|Queries| DBLocal
+    APICentral --> Adaptador
+    Adaptador -->|HTTP REST| APISupermercado
+```
+
+---
+
+## 2. Diagrama de Componentes
+```mermaid
+classDiagram
+    class FrontendMobileApp {
+        +Módulo UI
+        +Gestión de Estado Local
+        +Módulo de Escaneo
+    }
+    class APICentralNode {
+        +Gestión de Pedidos
+        +Módulo Notificaciones
+    }
+    class ServicioSecurity {
+        +Módulo Autenticación
+    }
+    class AccesoDatos {
+        +Módulo BD Central
+        +Módulo Caché Imágenes
+    }
+    class AdaptadorExterno {
+        +Adaptador de Inventario
+        +Integración de Precios
+    }
+
+    FrontendMobileApp ..> APICentralNode : HTTP
+    APICentralNode ..> ServicioSecurity : JWT Auth
+    APICentralNode ..> AccesoDatos : Persistence
+    APICentralNode ..> AdaptadorExterno : Interoperabilidad
+```
+
+---
+
+## 3. Diagrama de Secuencia (Flujo Crítico de la HU)
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Picker as Picker
+    participant Front as Frontend Mobile App
+    participant Back as API Central (Node.js)
+    participant Auth as Seguridad (JWT)
+    participant DB as Base de Datos Central
+    participant Ext as Adaptador Inventario
+
+    Picker->>Front: Inicia picking o escanea
+    Front->>Back: POST /api/picking/validar (Token + Datos)
+    activate Back
+    Back->>Auth: validarToken(token)
+    Auth-->>Back: Token OK
+    Back->>DB: guardarPedidoActivo()
+    DB-->>Back: Estado cambiado a "En Proceso"
+    Back->>Ext: consultarStock()
+    Ext-->>Back: API Supermercado 200 OK
+    Back-->>Front: HTTP 200 OK
+    deactivate Back
+    Front-->>Picker: Actualiza progreso (ej: 26/42)
+```
+
+```
