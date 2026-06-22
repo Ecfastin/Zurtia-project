@@ -87,7 +87,7 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 | Requisitos Extrafuncionales | RequisitosExtrafuncionales.md |
 | Impact Analysis | impact_analysis.md |
 | Especificación HU | EspecificacionHU03.md |
-| Diagrama de despliegue y comp.|https://github.com/Ecfastin/Zurtia-project/blob/main/Dise%C3%B1oArquitectonico.md#1-diagrama-de-despliegue|
+| Diagrama de despliegue y comp.|<img width="669" height="474" alt="image" src="https://github.com/user-attachments/assets/6809c969-491b-41d3-8ba3-d2a8f765cc64" />|
 | Diagrama de componentes  | |
 Diagrama de secuencia   | |
 | Deuda Técnica | DeudaTecnica.md |
