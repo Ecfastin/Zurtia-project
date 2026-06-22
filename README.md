@@ -67,5 +67,65 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 # Link [Decisión Arquitectónica](DiseñoArquitectonico.md)
 
 # Link [Requisitos Extrafuncionales](RequisitosExtrafuncionales.md)
+
+# 📦 Artefactos del Proyecto
+
+| Artefacto | Archivo |
+|------------|------------|
+| Diseño Arquitectónico | DiseñoArquitectonico.md |
+| Entidades del Dominio | EntidadesDelDominio.md |
+| Requisitos Extrafuncionales | RequisitosExtrafuncionales.md |
+| Impact Analysis | impact_analysis.md |
+| Especificación HU08 | EspecificacionHU08.md |
+| Especificación HU14 | EspecificacionHU14.md |
+| Deuda Técnica | DeudaTecnica.md |
+| Casos de Prueba | README.md |
+
+---
+
+# 🧪 Casos de Prueba
+
+## API Productos (HU08)
+
+**Historia de Usuario:**
+
+Como picker, quiero que la lista de productos incluya la ubicación exacta (pasillos y góndola) de cada artículo para optimizar mi recorrido en el supermercado.
+
+### Casos de prueba
+
+1. Listar todos los productos.
+2. Verificar orden de categorías (Secos primero).
+3. Verificar Congelados al final.
+4. Verificar orden descendente de pasillos.
+5. Verificar presencia del campo pasillo.
+6. Verificar presencia del campo góndola.
+7. Verificar presencia del campo imagen_url.
+8. Verificar presencia del campo categoría.
+9. Verificar respuesta HTTP 200.
+10. Verificar orden ascendente de góndolas en mismo pasillo.
+
+---
+
+## API Login (HU14)
+
+**Historia de Usuario:**
+
+Como picker, quiero iniciar sesión con mi correo electrónico personal para acceder de forma sencilla y segura a mi panel de tareas.
+
+### Casos de prueba
+
+1. Login exitoso picker.
+2. Login exitoso supervisor.
+3. Contraseña incorrecta.
+4. Correo no registrado.
+5. Falta contraseña.
+6. Falta correo.
+7. Body vacío.
+8. Contraseña vacía.
+9. Correo vacío.
+10. Formato de correo inválido.
+
+---
+
 # Link [EntidadesDelDominio](EntidadesDelDominio.md)
 
