@@ -127,5 +127,78 @@ Como picker, quiero iniciar sesión con mi correo electrónico personal para acc
 
 ---
 
+## 🧪 Casos de Prueba API-Login (HU14)
+
+- [HU14-01 Login exitoso picker](#hu14-01-login-exitoso-picker)
+- [HU14-02 Login exitoso supervisor](#hu14-02-login-exitoso-supervisor)
+- [HU14-03 Contraseña incorrecta](#hu14-03-contraseña-incorrecta)
+- [HU14-04 Correo no registrado](#hu14-04-correo-no-registrado)
+- [HU14-05 Falta password](#hu14-05-falta-password)
+- [HU14-06 Falta correo](#hu14-06-falta-correo)
+- [HU14-07 Body vacío](#hu14-07-body-vacío)
+- [HU14-08 Password vacío](#hu14-08-password-vacío)
+- [HU14-09 Correo vacío](#hu14-09-correo-vacío)
+- [HU14-10 Correo formato inválido](#hu14-10-correo-formato-inválido)
+
+---
+
+## HU14-01 Login exitoso picker
+El usuario picker ingresa correctamente al sistema con credenciales válidas y recibe un token de autenticación.
+**Resultado esperado:** HTTP 200 — Login exitoso
+
+---
+
+## HU14-02 Login exitoso supervisor
+El usuario supervisor ingresa correctamente al sistema con credenciales válidas y recibe un token de autenticación.
+**Resultado esperado:** HTTP 200 — Login exitoso
+
+---
+
+## HU14-03 Contraseña incorrecta
+El sistema rechaza el acceso cuando la contraseña no coincide con el usuario registrado.
+**Resultado esperado:** HTTP 401 — Contraseña incorrecta
+
+---
+
+## HU14-04 Correo no registrado
+El sistema rechaza el login cuando el correo no existe en la base de datos.
+**Resultado esperado:** HTTP 401 — Correo no registrado
+
+---
+
+## HU14-05 Falta password
+El sistema detecta que falta el campo password en la solicitud.
+**Resultado esperado:** HTTP 400 — Campos requeridos
+
+---
+
+## HU14-06 Falta correo
+El sistema detecta que falta el campo correo en la solicitud.
+**Resultado esperado:** HTTP 400 — Campos requeridos
+
+---
+
+## HU14-07 Body vacío
+El sistema rechaza la solicitud por no enviar datos.
+**Resultado esperado:** HTTP 400 — Campos requeridos
+
+---
+
+## HU14-08 Password vacío
+El sistema detecta password vacío y rechaza el login.
+**Resultado esperado:** HTTP 400 — Campos requeridos
+
+---
+
+## HU14-09 Correo vacío
+El sistema detecta correo vacío y rechaza el login.
+**Resultado esperado:** HTTP 400 — Campos requeridos
+
+---
+
+## HU14-10 Correo formato inválido
+El sistema rechaza el correo porque no cumple formato válido.
+**Resultado esperado:** HTTP 401 — Correo no registrado
+
 # Link [EntidadesDelDominio](EntidadesDelDominio.md)
 
