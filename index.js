@@ -2,9 +2,26 @@ const express = require('express');
 const db = require('./db');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const jwt = require('jsonwebtoken'); // Importar JWT
 
 const app = express();
 app.use(express.json());
+app.use(express.static('public'));
+
+const JWT_SECRET = process.env.JWT_SECRET || 'secreto_super_seguro';
+
+// Middleware de autenticación simple
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+};
 
 const swaggerSpec = swaggerJsdoc({
     definition: {
@@ -20,54 +37,35 @@ const swaggerSpec = swaggerJsdoc({
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.get('/cursos', (req, res) => {
-    res.json(db.prepare('SELECT * FROM cursos').all());
-});
-
-app.post('/cursos', (req, res) => {
-    const { nombre, instructor, creditos } = req.body;
-    const r = db.prepare(
-        'INSERT INTO cursos (nombre, instructor, creditos) VALUES (?, ?, ?)'
-    ).run(nombre, instructor, creditos);
-    res.status(201).json({ id: r.lastInsertRowid, nombre, instructor, creditos });
-});
-
-app.put('/cursos/:id', (req, res) => {
-    const { nombre, instructor, creditos } = req.body;
-    const i = db.prepare(
-        'UPDATE cursos SET nombre=?, instructor=?, creditos=? WHERE id=?'
-    ).run(nombre, instructor, creditos, req.params.id);
-    if (i.changes === 0) return res.status(404).json({ error: 'Curso no encontrado' });
-    res.json({ mensaje: 'Curso actualizado' });
-});
-
-app.delete('/cursos/:id', (req, res) => {
-    const i = db.prepare('DELETE FROM cursos WHERE id=?').run(req.params.id);
-    if (i.changes === 0) return res.status(404).json({ error: 'Curso no encontrado' });
-    res.json({ mensaje: 'Curso eliminado' });
-});
-
-app.post('/login', (req, res) => {
-    const { correo, password } = req.body;
-    if (!correo || !password) {
-        return res.status(400).json({ error: 'Correo y contraseña son requeridos' });
-    }
-    const usuario = db.prepare('SELECT * FROM usuarios WHERE correo = ?').get(correo);
-    if (!usuario) {
-        return res.status(401).json({ error: 'Correo no registrado' });
-    }
-    if (usuario.password !== password) {
-        return res.status(401).json({ error: 'Contraseña incorrecta' });
-    }
-    res.json({
-        mensaje: 'Login exitoso',
-        usuario: {
-            id: usuario.id,
-            nombre: usuario.nombre,
-            correo: usuario.correo,
-            rol: usuario.rol
+app.post('/login', async (req, res) => {
+    try {
+        const { correo, password } = req.body;
+        if (!correo || !password) {
+            return res.status(400).json({ error: 'Correo y contraseña son requeridos' });
         }
-    });
+        const result = await db.query('SELECT * FROM usuarios WHERE correo = $1', [correo]);
+        const usuario = result.rows[0];
+        if (!usuario) {
+            return res.status(401).json({ error: 'Correo no registrado' });
+        }
+        if (usuario.password !== password) {
+            return res.status(401).json({ error: 'Contraseña incorrecta' });
+        }
+
+        const token = jwt.sign({ id: usuario.id, rol: usuario.rol }, JWT_SECRET, { expiresIn: '1h' });
+        
+        res.json({
+            token,
+            usuario: {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                correo: usuario.correo,
+                rol: usuario.rol
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 // ─── HU #8: Productos con ubicación ──────────────────────────────────────────
 /**
@@ -81,27 +79,156 @@ app.post('/login', (req, res) => {
  *       404:
  *         description: No hay productos
  */
-app.get('/productos', (req, res) => {
-    const productos = db.prepare(`
-        SELECT id, nombre, categoria, pasillo, gondola, imagen_url
-        FROM productos
-        ORDER BY
-            CASE categoria
-                WHEN 'Secos'             THEN 1
-                WHEN 'Frutas y Verduras' THEN 2
-                WHEN 'Refrigerados'      THEN 3
-                WHEN 'Congelados'        THEN 4
-                ELSE 5
-            END,
-            pasillo DESC,
-            gondola ASC
-    `).all();
+app.get('/productos', async (req, res) => {
+    try {
+        const result = await db.query(`
+            SELECT id, nombre, categoria, pasillo, gondola, imagen_url
+            FROM productos
+            ORDER BY
+                CASE categoria
+                    WHEN 'Secos'             THEN 1
+                    WHEN 'Frutas y Verduras' THEN 2
+                    WHEN 'Refrigerados'      THEN 3
+                    WHEN 'Congelados'        THEN 4
+                    ELSE 5
+                END,
+                pasillo DESC,
+                gondola ASC
+        `);
 
-    if (productos.length === 0) {
-        return res.status(404).json({ error: 'No hay productos disponibles' });
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'No hay productos disponibles' });
+        }
+
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
-
-    res.json(productos);
 });
+
+// ─── Endpoints de Usuarios y Pedidos (Protegidos) ───────────────────────────
+
+app.get('/usuarios', authenticateToken, async (req, res) => {
+    try {
+        const { rol } = req.query;
+        let query = 'SELECT id, nombre, correo, rol FROM usuarios';
+        let params = [];
+        if (rol) {
+            query += ' WHERE rol = $1';
+            params.push(rol);
+        }
+        const result = await db.query(query, params);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/pedidos', authenticateToken, async (req, res) => {
+    try {
+        const { picker_id, estado } = req.query;
+        let query = 'SELECT * FROM pedidos WHERE 1=1';
+        let params = [];
+        if (picker_id) {
+            query += ' AND picker_id = $' + (params.length + 1);
+            params.push(picker_id);
+        }
+        if (estado) {
+            query += ' AND estado = $' + (params.length + 1);
+            params.push(estado);
+        }
+        const result = await db.query(query, params);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.patch('/pedidos/:id', authenticateToken, async (req, res) => {
+    try {
+        const { estado, picker_id } = req.body;
+        let query = 'UPDATE pedidos SET ';
+        let sets = [];
+        let params = [];
+        
+        if (estado) {
+            sets.push('estado = $' + (params.length + 1));
+            params.push(estado);
+        }
+        if (picker_id) {
+            sets.push('picker_id = $' + (params.length + 1));
+            params.push(picker_id);
+        }
+        
+        query += sets.join(', ') + ' WHERE id = $' + (params.length + 1);
+        params.push(req.params.id);
+        
+        await db.query(query, params);
+        res.json({ mensaje: 'Pedido actualizado' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/pedidos', authenticateToken, async (req, res) => {
+    try {
+        const { picker_id, productos, estado } = req.body;
+        const resultPedido = await db.query(
+            'INSERT INTO pedidos (picker_id, estado) VALUES ($1, $2) RETURNING id',
+            [picker_id || null, estado || 'pendiente']
+        );
+        const pedido_id = resultPedido.rows[0].id;
+
+        for (const p of productos) {
+            await db.query(
+                'INSERT INTO pedido_productos (pedido_id, producto_id, cantidad_solicitada) VALUES ($1, $2, $3)',
+                [pedido_id, p.producto_id, p.cantidad_solicitada]
+            );
+        }
+
+        res.status(201).json({ pedido_id });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/pedidos/:id', authenticateToken, async (req, res) => {
+    try {
+        const pedidoResult = await db.query('SELECT * FROM pedidos WHERE id = $1', [req.params.id]);
+        if (pedidoResult.rows.length === 0) return res.status(404).json({ error: 'Pedido no encontrado' });
+
+        const productosResult = await db.query(
+            'SELECT pp.*, p.nombre FROM pedido_productos pp JOIN productos p ON pp.producto_id = p.id WHERE pp.pedido_id = $1',
+            [req.params.id]
+        );
+
+        res.json({ ...pedidoResult.rows[0], productos: productosResult.rows });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.patch('/pedido-productos/:id', authenticateToken, async (req, res) => {
+    try {
+        const { cantidad_recolectada } = req.body;
+        const result = await db.query(
+            'UPDATE pedido_productos SET cantidad_recolectada = $1 WHERE id = $2',
+            [cantidad_recolectada, req.params.id]
+        );
+        if (result.rowCount === 0) return res.status(404).json({ error: 'Registro de producto no encontrado' });
+        res.json({ mensaje: 'Cantidad actualizada' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`API escuchando en puerto ${PORT}`));
+
+// Inicializar DB antes de arrancar el servidor
+db.initDB().then(() => {
+    app.listen(PORT, () => console.log(`API escuchando en puerto ${PORT}`));
+}).catch(err => {
+    console.error('Error al inicializar la base de datos:', err);
+    process.exit(1);
+});

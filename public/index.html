@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zurtia - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <!-- Login Form -->
+    <div id="login-container" class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Acceso Zurtia</h2>
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Correo</label>
+                <input type="email" id="correo" required class="w-full px-3 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input type="password" id="password" required class="w-full px-3 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-bold">Ingresar</button>
+        </form>
+        <p id="login-error" class="text-red-500 text-sm mt-4 hidden text-center"></p>
+    </div>
+
+    <!-- Main Content (Oculto inicialmente) -->
+    <div id="main-content" class="hidden w-full min-h-screen bg-gray-50">
+        <header class="bg-blue-600 text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+                <h1 class="text-2xl font-bold">ZURTIA - <span id="user-role-display"></span></h1>
+                <button onclick="logout()" class="text-sm bg-blue-700 px-3 py-1 rounded">Cerrar Sesión</button>
+            </div>
+        </header>
+        <main class="container mx-auto px-4 py-8">
+            <div id="content-area"></div>
+        </main>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const loginContainer = document.getElementById('login-container');
+        const mainContent = document.getElementById('main-content');
+
+        // Check auth on load
+        if (localStorage.getItem('token')) {
+            showApp();
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const correo = document.getElementById('correo').value;
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('login-error');
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ correo, password })
+                });
+                
+                if (!response.ok) throw new Error('Credenciales inválidas');
+                
+                const data = await response.json();
+                localStorage.setItem('token', data.token); // Guardar token
+                localStorage.setItem('user', JSON.stringify(data.usuario));
+                showApp();
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+            }
+        });
+
+        // Helper para hacer requests autenticados
+        async function fetchAuth(url, options = {}) {
+            const token = localStorage.getItem('token');
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            };
+            
+            const response = await fetch(url, {
+                ...options,
+                headers: { ...headers, ...options.headers }
+            });
+            
+            if (response.status === 401 || response.status === 403) {
+                logout(); // Token expirado o inválido
+                throw new Error('Sesión expirada');
+            }
+            
+            return response;
+        }
+
+        async function showApp() {
+            loginContainer.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            const user = JSON.parse(localStorage.getItem('user'));
+            document.getElementById('user-role-display').textContent = user.rol.toUpperCase();
+
+            if (user.rol === 'supervisor') {
+                renderSupervisorView();
+            } else {
+                renderPickerView();
+            }
+        }
+
+        async function renderSupervisorView() {
+            const area = document.getElementById('content-area');
+            const [pedidosRes, pickersRes] = await Promise.all([
+                fetchAuth('/pedidos'),
+                fetchAuth('/usuarios?rol=picker')
+            ]);
+            const pedidos = await pedidosRes.json();
+            const pickers = await pickersRes.json();
+            
+            area.innerHTML = `
+                <h2 class="text-xl font-bold mb-4">Gestión de Pedidos</h2>
+                <div class="space-y-4">
+                    ${pedidos.map(p => `
+                        <div class="bg-white p-4 rounded shadow flex justify-between items-center">
+                            <span>Pedido #${p.id} - Estado: ${p.estado}</span>
+                            <select onchange="asignarPedido(${p.id}, this.value)" class="border rounded p-1">
+                                <option value="">Asignar Picker...</option>
+                                ${pickers.map(u => `
+                                    <option value="${u.id}" ${p.picker_id == u.id ? 'selected' : ''}>${u.nombre}</option>
+                                `).join('')}
+                            </select>
+                            <button onclick="cambiarEstado(${p.id}, '${p.estado === 'pendiente' ? 'en_proceso' : 'pendiente'}')" 
+                                    class="bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                ${p.estado === 'pendiente' ? 'Iniciar' : 'Pausar'}
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        async function asignarPedido(pedidoId, pickerId) {
+            await fetchAuth(`/pedidos/${pedidoId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ picker_id: pickerId })
+            });
+            renderSupervisorView();
+        }
+
+        async function cambiarEstado(pedidoId, nuevoEstado) {
+            await fetchAuth(`/pedidos/${pedidoId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ estado: nuevoEstado })
+            });
+            renderSupervisorView();
+        }
+
+        async function renderPickerView() {
+            const area = document.getElementById('content-area');
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            // Buscar pedido en proceso para este picker
+            const res = await fetchAuth(`/pedidos?picker_id=${user.id}&estado=en_proceso`);
+            const pedidos = await res.json();
+            
+            if (pedidos.length === 0) {
+                area.innerHTML = `<div class="text-center py-10 text-gray-500">Esperando pedido...</div>`;
+                return;
+            }
+
+            const pedido = pedidos[0];
+            const pRes = await fetchAuth(`/pedidos/${pedido.id}`);
+            const pData = await pRes.json();
+            
+            area.innerHTML = `
+                <h2 class="text-xl font-bold mb-4">Pedido en proceso #${pedido.id}</h2>
+                <div class="grid grid-cols-1 gap-4">
+                    ${pData.productos.map(p => `
+                        <div class="bg-white p-4 rounded shadow">
+                            <h3 class="font-bold">${p.nombre}</h3>
+                            <p>Recogido: ${p.cantidad_recolectada} / ${p.cantidad_solicitada}</p>
+                            <button onclick="recolectar(${p.id}, ${p.pedido_id}, ${p.cantidad_recolectada + 1})" class="bg-green-600 text-white px-4 py-1 rounded mt-2">Recolectar 1</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        async function recolectar(id, pedidoId, nuevaCantidad) {
+            await fetchAuth(`/pedido-productos/${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ cantidad_recolectada: nuevaCantidad })
+            });
+            renderPickerView();
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            location.reload();
+        }
+    </script>
+</body>
+</html>

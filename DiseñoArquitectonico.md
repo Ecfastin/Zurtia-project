@@ -34,8 +34,10 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
     * **Responsabilidad:** Servicio dedicado a recuperar valores unitarios, totales y aplicación de ofertas vigentes en tiempo real.
 
 ### 4. Capa de Datos y Persistencia
-* **Módulo de Base de Datos Central**
-    * **Responsabilidad:** Almacenamiento de perfiles, historial de pedidos, logs de rendimiento y fotos de respaldo (seguridad).
+* **Módulo de Base de Datos Central (PostgreSQL)**
+    * **Responsabilidad:** Almacenamiento persistente de perfiles, historial de pedidos, productos y cursos.
+    * **Infraestructura:** La base de datos corre en un contenedor **Docker**, asegurando un entorno de desarrollo consistente y facilidad de despliegue.
+    * **Implementación:** Se utiliza el driver `pg` (node-postgres) para gestionar una conexión asíncrona mediante un pool de conexiones, mejorando la concurrencia en comparación con la implementación anterior en SQLite.
 * **Módulo de Caché de Imágenes**
     * **Responsabilidad:** Optimización de entrega de miniaturas (thumbnails) para minimizar el consumo de datos en la red del supermercado.
 
