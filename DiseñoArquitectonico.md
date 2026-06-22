@@ -54,7 +54,7 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 Para complementar la arquitectura REST/SOA explicada arriba, ahora se presentan los diagramas lógicos y físicos del sistema.
 
 ### 1. Diagrama de Despliegue
-Muestra cómo se conectan los componentes físicos y lógicos de la app y qué protocolos se usan en la red.
+Se conectan los componentes físicos y lógicos de la app y qué protocolos se usan en la red.
 
 ```mermaid
 graph TD
