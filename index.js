@@ -57,6 +57,12 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Contraseña incorrecta' });
         }
 
+        // Si es picker, asegurar que inicia como no disponible
+        if (usuario.rol === 'picker') {
+            await db.query('UPDATE usuarios SET disponible = FALSE WHERE id = $1', [usuario.id]);
+            usuario.disponible = false;
+        }
+
         const token = jwt.sign({ id: usuario.id, rol: usuario.rol }, JWT_SECRET, { expiresIn: '1h' });
         
         res.json({
@@ -65,7 +71,8 @@ app.post('/login', async (req, res) => {
                 id: usuario.id,
                 nombre: usuario.nombre,
                 correo: usuario.correo,
-                rol: usuario.rol
+                rol: usuario.rol,
+                disponible: usuario.disponible
             }
         });
     } catch (err) {
@@ -133,18 +140,28 @@ app.get('/productos', async (req, res) => {
 app.patch('/usuarios/:id/disponibilidad', authenticateToken, async (req, res) => {
     try {
         const { disponible } = req.body;
+        console.log(`Picker ${req.params.id} cambiando disponibilidad a: ${disponible}`);
+        
         await db.query('UPDATE usuarios SET disponible = $1 WHERE id = $2', [disponible, req.params.id]);
         
         // Si se marca disponible, intentar asignar un pedido pendiente
         if (disponible) {
+            // Buscamos un pedido que no tenga picker (picker_id IS NULL)
+            // IMPORTANTE: Aseguramos que el estado sea 'pendiente'
             const pedidoRes = await db.query('SELECT * FROM pedidos WHERE estado = $1 AND picker_id IS NULL LIMIT 1', ['pendiente']);
+            
             if (pedidoRes.rows.length > 0) {
                 const pedido = pedidoRes.rows[0];
+                console.log(`Asignando pedido ${pedido.id} a picker ${req.params.id}`);
+                // Asignamos el picker y cambiamos a en_proceso
                 await db.query('UPDATE pedidos SET picker_id = $1, estado = $2 WHERE id = $3', [req.params.id, 'en_proceso', pedido.id]);
+            } else {
+                console.log('No se encontraron pedidos pendientes para asignar.');
             }
         }
         res.json({ mensaje: 'Disponibilidad actualizada' });
     } catch (err) {
+        console.error('Error en disponibilidad:', err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -158,13 +175,15 @@ app.patch('/pedidos/:id/completar', authenticateToken, async (req, res) => {
         const pickerRes = await db.query('SELECT picker_id FROM pedidos WHERE id = $1', [req.params.id]);
         const picker_id = pickerRes.rows[0].picker_id;
         
-        const nextPedidoRes = await db.query('SELECT * FROM pedidos WHERE estado = $1 AND picker_id IS NULL LIMIT 1', ['pendiente']);
-        if (nextPedidoRes.rows.length > 0) {
-            const nextPedido = nextPedidoRes.rows[0];
-            await db.query('UPDATE pedidos SET picker_id = $1, estado = $2 WHERE id = $3', [picker_id, 'en_proceso', nextPedido.id]);
-        } else {
-            // Si no hay más pedidos, marcar picker como no disponible
-            await db.query('UPDATE usuarios SET disponible = $1 WHERE id = $2', [false, picker_id]);
+        // Verificamos si el picker sigue disponible
+        const pickerStatus = await db.query('SELECT disponible FROM usuarios WHERE id = $1', [picker_id]);
+        
+        if (pickerStatus.rows.length > 0 && pickerStatus.rows[0].disponible) {
+            const nextPedidoRes = await db.query('SELECT * FROM pedidos WHERE estado = $1 AND picker_id IS NULL LIMIT 1', ['pendiente']);
+            if (nextPedidoRes.rows.length > 0) {
+                const nextPedido = nextPedidoRes.rows[0];
+                await db.query('UPDATE pedidos SET picker_id = $1, estado = $2 WHERE id = $3', [picker_id, 'en_proceso', nextPedido.id]);
+            }
         }
         
         res.json({ mensaje: 'Pedido completado y nueva tarea asignada si corresponde' });

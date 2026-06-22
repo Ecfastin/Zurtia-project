@@ -3,39 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zurtia - Login</title>
+    <title>Zurtia - Sistema de Pickeo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #f7fcf7; }
+        .bg-zurtia { background-color: #d1e7dd; } /* Verde pálido */
+        .text-zurtia { color: #0f5132; }
+        .btn-zurtia { transition: all 0.2s ease; border-radius: 9999px; }
+        .btn-zurtia:hover { transform: scale(1.02); opacity: 0.9; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="min-h-screen">
 
     <!-- Login Form -->
-    <div id="login-container" class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Acceso Zurtia</h2>
-        <form id="login-form" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Correo</label>
-                <input type="email" id="correo" required class="w-full px-3 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Contraseña</label>
-                <input type="password" id="password" required class="w-full px-3 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
-            </div>
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-bold">Ingresar</button>
-        </form>
-        <p id="login-error" class="text-red-500 text-sm mt-4 hidden text-center"></p>
+    <div id="login-container" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-green-100">
+            <h2 class="text-3xl font-bold text-center mb-8 text-zurtia">Zurtia</h2>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600">Correo</label>
+                    <input type="email" id="correo" required class="w-full px-4 py-2 border rounded-full focus:ring-2 focus:ring-green-200 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600">Contraseña</label>
+                    <input type="password" id="password" required class="w-full px-4 py-2 border rounded-full focus:ring-2 focus:ring-green-200 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-[#0f5132] text-white py-3 rounded-full hover:bg-green-800 font-bold btn-zurtia">Ingresar</button>
+            </form>
+            <p id="login-error" class="text-red-500 text-sm mt-4 hidden text-center"></p>
+        </div>
     </div>
 
-    <!-- Main Content (Oculto inicialmente) -->
-    <div id="main-content" class="hidden w-full min-h-screen bg-gray-50">
-        <header class="bg-blue-600 text-white shadow-lg">
-            <div class="container mx-auto px-4 py-6 flex justify-between items-center">
-                <h1 class="text-2xl font-bold">ZURTIA - <span id="user-role-display"></span></h1>
-                <button onclick="logout()" class="text-sm bg-blue-700 px-3 py-1 rounded">Cerrar Sesión</button>
+    <!-- Main Content -->
+    <div id="main-content" class="hidden w-full min-h-screen">
+        <header class="bg-white border-b border-green-100 shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-xl font-bold text-zurtia">ZURTIA - <span id="user-role-display"></span></h1>
+                <button onclick="logout()" class="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 btn-zurtia">Cerrar Sesión</button>
             </div>
         </header>
         <main class="container mx-auto px-4 py-8">
@@ -48,10 +53,7 @@
         const loginContainer = document.getElementById('login-container');
         const mainContent = document.getElementById('main-content');
 
-        // Check auth on load
-        if (localStorage.getItem('token')) {
-            showApp();
-        }
+        if (localStorage.getItem('token')) showApp();
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -69,7 +71,7 @@
                 if (!response.ok) throw new Error('Credenciales inválidas');
                 
                 const data = await response.json();
-                localStorage.setItem('token', data.token); // Guardar token
+                localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.usuario));
                 showApp();
             } catch (err) {
@@ -80,190 +82,109 @@
 
         async function fetchAuth(url, options = {}) {
             const token = localStorage.getItem('token');
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            };
-            
             const response = await fetch(url, {
                 ...options,
-                headers: { ...headers, ...options.headers }
+                headers: { ...options.headers, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
             });
-            
-            if (response.status === 401 || response.status === 403) {
-                logout(); // Token expirado o inválido
-                throw new Error('Sesión expirada');
-            }
-
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                const text = await response.text();
-                console.error('Respuesta no es JSON:', text);
-                throw new Error(`El servidor respondió con ${contentType || 'formato desconocido'} en lugar de JSON. Verifica la ruta: ${url}`);
-            }
-            
+            if (response.status === 401 || response.status === 403) { logout(); throw new Error('Sesión expirada'); }
             return response;
         }
 
         async function showApp() {
             loginContainer.classList.add('hidden');
             mainContent.classList.remove('hidden');
-            try {
-                const user = JSON.parse(localStorage.getItem('user'));
-                document.getElementById('user-role-display').textContent = user.rol.toUpperCase();
-
-                if (user.rol === 'supervisor') {
-                    await renderSupervisorView();
-                } else {
-                    await renderPickerView();
-                }
-            } catch (err) {
-                console.error('Error al cargar la aplicación:', err);
-                document.getElementById('content-area').innerHTML = `<p class="text-red-500">Error al cargar: ${err.message}</p>`;
-            }
+            const user = JSON.parse(localStorage.getItem('user'));
+            document.getElementById('user-role-display').textContent = user.rol.toUpperCase();
+            user.rol === 'supervisor' ? await renderSupervisorView() : await renderPickerView();
         }
 
         async function renderSupervisorView() {
             const area = document.getElementById('content-area');
-            const [pedidosRes, pickersRes] = await Promise.all([
-                fetchAuth('/pedidos'),
-                fetchAuth('/usuarios?rol=picker')
-            ]);
+            const [pedidosRes, pickersRes] = await Promise.all([fetchAuth('/pedidos'), fetchAuth('/usuarios?rol=picker')]);
             const pedidos = await pedidosRes.json();
             const pickers = await pickersRes.json();
             
             area.innerHTML = `
-                <h2 class="text-xl font-bold mb-4">Gestión de Pedidos</h2>
-                <div class="mb-6 p-4 bg-white rounded shadow">
-                    <h3 class="font-bold mb-2">Pickers:</h3>
-                    ${pickers.map(u => `<p>${u.nombre} - ${u.disponible ? '🟢 Disponible' : '🔴 No disponible'}</p>`).join('')}
+                <h2 class="text-2xl font-bold mb-6 text-zurtia">Monitoreo de Pedidos</h2>
+                <div class="mb-6 p-6 bg-white rounded-3xl shadow-sm border border-green-50">
+                    <h3 class="font-bold mb-4 text-gray-700">Estado de Pickers:</h3>
+                    ${pickers.map(u => `<p class="flex items-center gap-2"><span class="w-3 h-3 rounded-full ${u.disponible ? 'bg-green-400' : 'bg-red-400'}"></span> ${u.nombre}</p>`).join('')}
                 </div>
                 <div class="space-y-4">
                     ${pedidos.map(p => `
-                        <div class="bg-white p-4 rounded shadow flex justify-between items-center">
-                            <span>Pedido #${p.id} - Estado: ${p.estado}</span>
-                            <select onchange="asignarPedido(${p.id}, this.value)" class="border rounded p-1">
-                                <option value="">Asignar Picker...</option>
-                                ${pickers.map(u => `
-                                    <option value="${u.id}" ${p.picker_id == u.id ? 'selected' : ''}>${u.nombre}</option>
-                                `).join('')}
-                            </select>
-                            <button onclick="cambiarEstado(${p.id}, '${p.estado === 'pendiente' ? 'en_proceso' : 'pendiente'}')" 
-                                    class="bg-blue-500 text-white px-2 py-1 rounded text-sm">
-                                ${p.estado === 'pendiente' ? 'Iniciar' : 'Pausar'}
-                            </button>
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-green-50 flex justify-between items-center">
+                            <span>Pedido #${p.id} - <strong class="text-zurtia">${p.estado}</strong> - Picker: ${p.picker_id || 'Libre'}</span>
                         </div>
                     `).join('')}
                 </div>
             `;
         }
 
-        async function asignarPedido(pedidoId, pickerId) {
-            await fetchAuth(`/pedidos/${pedidoId}`, {
-                method: 'PATCH',
-                body: JSON.stringify({ picker_id: pickerId })
-            });
-            renderSupervisorView();
-        }
-
-        async function cambiarEstado(pedidoId, nuevoEstado) {
-            await fetchAuth(`/pedidos/${pedidoId}`, {
-                method: 'PATCH',
-                body: JSON.stringify({ estado: nuevoEstado })
-            });
-            renderSupervisorView();
-        }
-
         async function renderPickerView() {
             const area = document.getElementById('content-area');
             const user = JSON.parse(localStorage.getItem('user'));
-            
-            // Obtener datos actualizados del usuario para ver si está disponible
             const uRes = await fetchAuth(`/usuarios?rol=picker`);
             const pickers = await uRes.json();
             const me = pickers.find(p => p.id === user.id);
             
-            // Buscar pedido en proceso para este picker
+            user.disponible = me.disponible;
+            localStorage.setItem('user', JSON.stringify(user));
+            
             const res = await fetchAuth(`/pedidos?picker_id=${user.id}&estado=en_proceso`);
             const pedidos = await res.json();
             
             area.innerHTML = `
-                <div class="mb-4">
+                <div class="mb-6">
                     <button onclick="toggleDisponibilidad(${user.id}, ${!me.disponible})" 
-                            class="px-4 py-2 rounded ${me.disponible ? 'bg-red-500' : 'bg-green-500'} text-white">
-                        ${me.disponible ? 'No disponible' : 'Disponible'}
+                            class="px-8 py-3 btn-zurtia text-white font-bold ${me.disponible ? 'bg-red-500' : 'bg-green-600'}">
+                        ${me.disponible ? 'Desconectarse' : 'Conectarse'}
                     </button>
                 </div>
             `;
 
             if (pedidos.length === 0) {
-                area.innerHTML += `<div class="text-center py-10 text-gray-500">Esperando pedido...</div>`;
+                if (me.disponible) {
+                    area.innerHTML += `<div class="text-center py-20 text-gray-500"><i class="fas fa-spinner fa-spin text-3xl mb-4"></i><br>Buscando pedidos...</div>`;
+                    setTimeout(renderPickerView, 3000);
+                } else {
+                    area.innerHTML += `<div class="text-center py-20 text-gray-500 text-lg">Conéctate para recibir pedidos.</div>`;
+                }
                 return;
             }
 
             const pedido = pedidos[0];
             const pRes = await fetchAuth(`/pedidos/${pedido.id}`);
             const pData = await pRes.json();
-            
             const completado = pData.productos.every(p => p.cantidad_recolectada === p.cantidad_solicitada);
             
             area.innerHTML += `
-                <h2 class="text-xl font-bold mb-4">Pedido en proceso #${pedido.id}</h2>
+                <h2 class="text-2xl font-bold mb-6 text-zurtia">Pedido #${pedido.id}</h2>
                 <div class="grid grid-cols-1 gap-4">
                     ${pData.productos.map(p => `
-                        <div class="bg-white p-4 rounded shadow border-l-4 ${p.cantidad_recolectada === p.cantidad_solicitada ? 'border-green-500' : 'border-blue-500'}">
-                            <h3 class="font-bold text-lg">${p.nombre}</h3>
-                            <p>Recogido: <strong>${p.cantidad_recolectada} / ${p.cantidad_solicitada}</strong></p>
-                            <div class="flex gap-2 mt-2">
-                                <button onclick="recolectar(${p.id}, ${p.cantidad_recolectada - 1})" 
-                                        class="bg-red-500 text-white px-4 py-2 rounded" 
-                                        ${p.cantidad_recolectada === 0 ? 'disabled' : ''}>-</button>
-                                <button onclick="recolectar(${p.id}, ${p.cantidad_recolectada + 1})" 
-                                        class="bg-green-600 text-white px-4 py-2 rounded" 
-                                        ${p.cantidad_recolectada >= p.cantidad_solicitada ? 'disabled' : ''}>+</button>
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border-l-8 ${p.cantidad_recolectada === p.cantidad_solicitada ? 'border-green-400' : 'border-blue-300'}">
+                            <div class="flex items-center gap-4">
+                                ${p.imagen_url ? `<img src="${p.imagen_url}" alt="${p.nombre}" class="w-20 h-20 object-cover rounded-2xl">` : ''}
+                                <div>
+                                    <h3 class="font-bold text-lg">${p.nombre}</h3>
+                                    <p class="text-sm text-gray-500">Pasillo ${p.pasillo} | Góndola ${p.gondola}</p>
+                                    <p class="text-lg mt-1">Recogido: <strong>${p.cantidad_recolectada} / ${p.cantidad_solicitada}</strong></p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3 mt-4">
+                                <button onclick="recolectar(${p.id}, ${p.cantidad_recolectada - 1})" class="bg-gray-100 px-6 py-2 rounded-full font-bold btn-zurtia" ${p.cantidad_recolectada === 0 ? 'disabled' : ''}>-</button>
+                                <button onclick="recolectar(${p.id}, ${p.cantidad_recolectada + 1})" class="bg-green-100 text-green-800 px-6 py-2 rounded-full font-bold btn-zurtia" ${p.cantidad_recolectada >= p.cantidad_solicitada ? 'disabled' : ''}>+</button>
                             </div>
                         </div>
                     `).join('')}
                 </div>
-                ${completado ? `<button onclick="finalizarPedido(${pedido.id})" class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Finalizar Pedido</button>` : ''}
+                ${completado ? `<button onclick="finalizarPedido(${pedido.id})" class="mt-8 w-full bg-[#0f5132] text-white py-4 rounded-full font-bold text-lg btn-zurtia">Finalizar Pedido</button>` : ''}
             `;
         }
 
-        async function finalizarPedido(pedidoId) {
-            await fetchAuth(`/pedidos/${pedidoId}/completar`, { method: 'PATCH' });
-            renderPickerView();
-        }
-
-        async function recolectar(id, nuevaCantidad) {
-            try {
-                const res = await fetchAuth(`/pedido-productos/${id}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify({ cantidad_recolectada: nuevaCantidad })
-                });
-                if (!res.ok) {
-                    const err = await res.json();
-                    alert('Error: ' + err.error);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Error al actualizar');
-            }
-            renderPickerView();
-        }
-
-        async function toggleDisponibilidad(userId, disponible) {
-            await fetchAuth(`/usuarios/${userId}/disponibilidad`, {
-                method: 'PATCH',
-                body: JSON.stringify({ disponible })
-            });
-            renderPickerView();
-        }
-
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            location.reload();
-        }
+        async function finalizarPedido(pedidoId) { await fetchAuth(`/pedidos/${pedidoId}/completar`, { method: 'PATCH' }); renderPickerView(); }
+        async function recolectar(id, nuevaCantidad) { await fetchAuth(`/pedido-productos/${id}`, { method: 'PATCH', body: JSON.stringify({ cantidad_recolectada: nuevaCantidad }) }); renderPickerView(); }
+        async function toggleDisponibilidad(userId, disponible) { await fetchAuth(`/usuarios/${userId}/disponibilidad`, { method: 'PATCH', body: JSON.stringify({ disponible }) }); renderPickerView(); }
+        function logout() { localStorage.removeItem('token'); localStorage.removeItem('user'); location.reload(); }
     </script>
 </body>
 </html>
