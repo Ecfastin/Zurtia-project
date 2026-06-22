@@ -83,86 +83,37 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 
 ---
 
-# 🧪 Casos de Prueba API-Productos (HU08)
+# 🧪 Casos de Prueba API-Login (HU14)
 
-## HU08-01 Listar productos
-Valida que se obtienen todos los productos correctamente.  
-**Resultado esperado:** HTTP 200
-
-## HU08-02 Secos primero
-Valida que la categoría Secos aparece primero.  
-**Resultado esperado:** Secos en primera posición
-
-## HU08-03 Congelados al final
-Valida que Congelados aparece al final.  
-**Resultado esperado:** Último elemento Congelados
-
-## HU08-04 Pasillo descendente
-Valida orden correcto por pasillo en Secos.  
-**Resultado esperado:** Orden descendente
-
-## HU08-05 Campo pasillo
-Todos los productos incluyen pasillo.
-
-## HU08-06 Campo góndola
-Todos los productos incluyen góndola.
-
-## HU08-07 Campo imagen
-Todos los productos incluyen imagen_url.
-
-## HU08-08 Campo categoría
-Todos los productos incluyen categoría.
-
-## HU08-09 Status 200
-Respuesta correcta del servidor.
-
-## HU08-10 Góndola ascendente
-Orden correcto dentro del mismo pasillo.
+| ID | Nombre | Método | URL | Body | Resultado esperado |
+|----|--------|--------|-----|------|--------------------|
+| HU14-01 | Login exitoso picker | `POST` | `/login` | `{"correo":"picker@zurtia.cl","password":"1234"}` | HTTP 200 — `{"mensaje":"Login exitoso","usuario":{id,nombre,correo,rol}}` |
+| HU14-02 | Login exitoso supervisor | `POST` | `/login` | `{"correo":"supervisor@zurtia.cl","password":"abcd"}` | HTTP 200 — `{"mensaje":"Login exitoso","usuario":{id,nombre,correo,rol}}` |
+| HU14-03 | Contraseña incorrecta | `POST` | `/login` | `{"correo":"picker@zurtia.cl","password":"wrong"}` | HTTP 401 — `{"error":"Contraseña incorrecta"}` |
+| HU14-04 | Correo no registrado | `POST` | `/login` | `{"correo":"noexiste@zurtia.cl","password":"1234"}` | HTTP 401 — `{"error":"Correo no registrado"}` |
+| HU14-05 | Falta password | `POST` | `/login` | `{"correo":"picker@zurtia.cl"}` | HTTP 400 — `{"error":"Correo y contraseña son requeridos"}` |
+| HU14-06 | Falta correo | `POST` | `/login` | `{"password":"1234"}` | HTTP 400 — `{"error":"Correo y contraseña son requeridos"}` |
+| HU14-07 | Body vacío | `POST` | `/login` | `{}` | HTTP 400 — `{"error":"Correo y contraseña son requeridos"}` |
+| HU14-08 | Password vacío | `POST` | `/login` | `{"correo":"picker@zurtia.cl","password":""}` | HTTP 400 — `{"error":"Correo y contraseña son requeridos"}` |
+| HU14-09 | Correo vacío | `POST` | `/login` | `{"correo":"","password":"1234"}` | HTTP 400 — `{"error":"Correo y contraseña son requeridos"}` |
+| HU14-10 | Correo formato inválido | `POST` | `/login` | `{"correo":"noesuncorreo","password":"1234"}` | HTTP 401 — `{"error":"Correo no registrado"}` |
 
 ---
 
-# 🧪 Casos de Prueba API-Login (HU14)
+# 🧪 Casos de Prueba API-Productos (HU08)
 
-## HU14-01 Login exitoso picker
-Login correcto con credenciales válidas.  
-**Resultado esperado:** HTTP 200
-
-## HU14-02 Login exitoso supervisor
-Login correcto supervisor.  
-**Resultado esperado:** HTTP 200
-
-## HU14-03 Contraseña incorrecta
-Credenciales inválidas.  
-**Resultado:** HTTP 401
-
-## HU14-04 Correo no registrado
-Usuario no existe.  
-**Resultado:** HTTP 401
-
-## HU14-05 Falta password
-Falta campo password.  
-**Resultado:** HTTP 400
-
-## HU14-06 Falta correo
-Falta campo correo.  
-**Resultado:** HTTP 400
-
-## HU14-07 Body vacío
-Solicitud vacía.  
-**Resultado:** HTTP 400
-
-## HU14-08 Password vacío
-Password vacío no permitido.  
-**Resultado:** HTTP 400
-
-## HU14-09 Correo vacío
-Correo vacío no permitido.  
-**Resultado:** HTTP 400
-
-## HU14-10 Correo inválido
-Formato inválido.  
-**Resultado:** HTTP 401
-
+| ID | Nombre | Método | URL | Body | Resultado esperado |
+|----|--------|--------|-----|------|--------------------|
+| HU08-01 | Listar todos los productos | `GET` | `/productos` | ninguno | HTTP 200 — Array con todos los productos |
+| HU08-02 | Verificar orden — Secos primero | `GET` | `/productos` | ninguno | HTTP 200 — `productos[0].categoria === "Secos"` |
+| HU08-03 | Verificar Congelados al final | `GET` | `/productos` | ninguno | HTTP 200 — Último producto con `categoria === "Congelados"` |
+| HU08-04 | Pasillo descendente en Secos | `GET` | `/productos` | ninguno | HTTP 200 — Productos Secos ordenados por `pasillo` DESC |
+| HU08-05 | Campo pasillo presente | `GET` | `/productos` | ninguno | HTTP 200 — Todos los productos incluyen campo `pasillo` |
+| HU08-06 | Campo góndola presente | `GET` | `/productos` | ninguno | HTTP 200 — Todos los productos incluyen campo `gondola` |
+| HU08-07 | Campo imagen_url presente | `GET` | `/productos` | ninguno | HTTP 200 — Todos los productos incluyen campo `imagen_url` |
+| HU08-08 | Campo categoría presente | `GET` | `/productos` | ninguno | HTTP 200 — Todos los productos incluyen campo `categoria` |
+| HU08-09 | Verificar status 200 | `GET` | `/productos` | ninguno | HTTP 200 |
+| HU08-10 | Góndola ascendente mismo pasillo | `GET` | `/productos` | ninguno | HTTP 200 — Productos del mismo pasillo ordenados por `gondola` ASC |
 ---
 
 # 📐 Modelado de Análisis
