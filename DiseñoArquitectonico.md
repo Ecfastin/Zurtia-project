@@ -76,102 +76,70 @@ graph TD
         APISupermercado["API Supermercado"]
     end
 
-    %% Conexiones y Protocolos
-    FrontendApp -->|HTTP/HTTPS: Rutas API REST| APICentral
+    FrontendApp -->|HTTP/HTTPS| APICentral
     APICentral <--> ModuloAuth
-    APICentral -->|Drivers BD: Queries| DBLocal
+    APICentral -->|Queries| DBLocal
     APICentral --> Adaptador
-    Adaptador -->|HTTP REST: Sincroniza stock| APISupermercado
-
-    %% Estilos para que no se vea feo
-    style CelularPicker fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style ServidorBackend fill:#f5f5f5,stroke:#333,stroke-width:2px
-    style ServidorBD fill:#f0f0f0,stroke:#333,stroke-width:2px
-    style ServidorExterno fill:#fafafa,stroke:#333,stroke-width:2px
+    Adaptador -->|HTTP REST| APISupermercado
 ```
 
 ---
 
-### 2. Diagrama de Componentes
-Detalle de cómo dividimos los módulos del código por capas, especificando las interfaces de comunicación.
-
+## 2. Diagrama de Componentes
 ```mermaid
 classDiagram
     class FrontendMobileApp {
-        <<Component>>
         +Módulo UI
         +Gestión de Estado Local
         +Módulo de Escaneo
     }
-
     class APICentralNode {
-        <<Component>>
-        <<Interface>> IHttpReceiver
         +Gestión de Pedidos
         +Módulo Notificaciones
     }
-
-    class ServicioSeguridadJWT {
-        <<Component>>
-        <<Interface>> ISecurityAuth
+    class ServicioSecurity {
         +Módulo Autenticación
     }
-
-    class AccesoDatosDB {
-        <<Component>>
-        <<Interface>> IPersistence
+    class AccesoDatos {
         +Módulo BD Central
         +Módulo Caché Imágenes
     }
-
-    class AdaptadorSistemasExternos {
-        <<Component>>
-        <<Interface>> IExternalAdapter
+    class AdaptadorExterno {
         +Adaptador de Inventario
         +Integración de Precios
     }
 
-    FrontendMobileApp ..> APICentralNode : "Usa endpoints HTTP"
-    APICentralNode ..> ServicioSeguridadJWT : "Valida token JWT"
-    APICentralNode ..> AccesoDatosDB : "Persistencia y Caché"
-    APICentralNode ..> AdaptadorSistemasExternos : "Interoperabilidad"
+    FrontendMobileApp ..> APICentralNode : HTTP
+    APICentralNode ..> ServicioSecurity : JWT Auth
+    APICentralNode ..> AccesoDatos : Persistence
+    APICentralNode ..> AdaptadorExterno : Interoperabilidad
 ```
 
 ---
 
-### 3. Diagrama de Secuencia (Flujo Crítico de la HU)
-El paso a paso de lo que pasa entre las capas cuando el Picker interactúa con la app para realizar la validación de un picking.
-
+## 3. Diagrama de Secuencia (Flujo Crítico de la HU)
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Picker as Picker (Usuario)
+    actor Picker as Picker
     participant Front as Frontend Mobile App
     participant Back as API Central (Node.js)
     participant Auth as Seguridad (JWT)
     participant DB as Base de Datos Central
     participant Ext as Adaptador Inventario
 
-    Picker->>Front: Escanea código o inicia picking de un pedido
-    Front->>Back: POST /api/picking/validar (Manda Token + datos)
+    Picker->>Front: Inicia picking o escanea
+    Front->>Back: POST /api/picking/validar (Token + Datos)
     activate Back
-    
     Back->>Auth: validarToken(token)
-    activate Auth
-    Auth-->>Back: Token OK (Autorizado)
-    deactivate Auth
-
-    Back->>DB: guardarPedidoActivo() / actualizarEstado()
-    activate DB
+    Auth-->>Back: Token OK
+    Back->>DB: guardarPedidoActivo()
     DB-->>Back: Estado cambiado a "En Proceso"
-    deactivate DB
-
-    Back->>Ext: consultarStock / sincronizarConSupermercado()
-    activate Ext
-    Ext-->>Back: API Supermercado responde 200 OK (Datos en tiempo real)
-    deactivate Ext
-
-    Back-->>Front: HTTP 200 OK (Todo guardado y sincronizado)
+    Back->>Ext: consultarStock()
+    Ext-->>Back: API Supermercado 200 OK
+    Back-->>Front: HTTP 200 OK
     deactivate Back
-    Front-->>Picker: Actualiza contador de progreso (ej: 26/42)
+    Front-->>Picker: Actualiza progreso (ej: 26/42)
+```
+
 ```
