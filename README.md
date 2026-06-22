@@ -19,6 +19,14 @@
 | **Cristofer Riveros Gapuz**| Developer     |1.1- 2.1  |
 | **Ignacio Cortés Catrín**    | Developer     |3.1- 2.1- 1.1  |
 | **Patricio Rivadeneira Alfaro** | Developer | 4.1- 2.1- 1.1 |
+### Entrega 3
+| Nombre              | Rol           | Actividad |
+|---------------------|---------------|-----------|
+| **Ariadna Espejo Torres**| Scrum Master  | 1.1- 3.1 |
+|**Benjamin Figueroa Matamala**| Arquitecto |1.1-4.1  |
+| **Cristofer Riveros Gapuz**| Quality assurance     |1.1- 2.1  |
+| **Ignacio Cortés Catrín**    | Developer  |3.1- 2.1- 1.1  |
+| **Patricio Rivadeneira Alfaro** | Technical Lead | 4.1- 2.1- 1.1 |
 
 ## 📋 Backlog de Historias de Usuario
 
