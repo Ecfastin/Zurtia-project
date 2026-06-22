@@ -173,7 +173,7 @@ Diagrama de secuencia   | <img width="671" height="295" alt="image" src="https:/
 
 ## 🚀 Historia de Usuario implementada
 
-### HU2 - Cola de asignación automática de pedidos
+### HU3 - Cola de asignación automática de pedidos
 
 ---
 
