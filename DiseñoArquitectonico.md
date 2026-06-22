@@ -51,7 +51,7 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 
 ## 🏗️ Modelado de Diseño (Diagramas)
 
-Para complementar la arquitectura REST/SOA explicada arriba, a continuación se presentan los diagramas lógicos y físicos del sistema utilizando Mermaid.js.
+Para complementar la arquitectura REST/SOA explicada arriba, ahora se presentan los diagramas lógicos y físicos del sistema.
 
 ### 1. Diagrama de Despliegue
 Muestra cómo se conectan los componentes físicos y lógicos de la app y qué protocolos se usan en la red.
