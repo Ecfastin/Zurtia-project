@@ -57,30 +57,37 @@ Para complementar la arquitectura REST/SOA explicada arriba, a continuación se 
 Muestra cómo se conectan los componentes físicos y lógicos de la app y qué protocolos se usan en la red.
 
 ```mermaid
-deploymentDiagram
-    node CelularPicker ["Celular del Picker"] {
-        component FrontendApp ["Frontend Mobile App"]
-    }
+graph TD
+    subgraph CelularPicker ["Celular del Picker"]
+        FrontendApp["Frontend Mobile App"]
+    end
 
-    node ServidorBackend ["Servidor Backend (Node.js)"] {
-        component APICentral ["API Central (picking y validación)"]
-        component ModuloAuth ["Capa de Servicios (Auth JWT)"]
-        component Adaptador ["Adaptador de Inventario"]
-    }
+    subgraph ServidorBackend ["Servidor Backend (Node.js)"]
+        APICentral["API Central (picking y validación)"]
+        ModuloAuth["Capa de Servicios (Auth JWT)"]
+        Adaptador["Adaptador de Inventario"]
+    end
 
-    node ServidorBD ["Servidor BD Central"] {
-        database DBLocal ["Base de Datos Central"]
-    }
+    subgraph ServidorBD ["Servidor BD Central"]
+        DBLocal[("Base de Datos Central")]
+    end
 
-    node ServidorExterno ["Servidor Externo"] {
-        component APISupermercado ["API Supermercado"]
-    }
+    subgraph ServidorExterno ["Servidor Externo"]
+        APISupermercado["API Supermercado"]
+    end
 
-    FrontendApp --> |HTTP/HTTPS| APICentral : "Rutas API REST"
-    APICentral <--> ModuloAuth : "Filtro de JWT"
-    APICentral --> |Drivers BD| DBLocal : "Queries a la BD"
-    APICentral --> Adaptador : "Mapeo de datos antiguos"
-    Adaptador --> |HTTP REST| APISupermercado : "Sincroniza stock externo"
+    %% Conexiones y Protocolos
+    FrontendApp -->|HTTP/HTTPS: Rutas API REST| APICentral
+    APICentral <--> ModuloAuth
+    APICentral -->|Drivers BD: Queries| DBLocal
+    APICentral --> Adaptador
+    Adaptador -->|HTTP REST: Sincroniza stock| APISupermercado
+
+    %% Estilos sencillos para que se vea ordenado
+    style CelularPicker fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style ServidorBackend fill:#f5f5f5,stroke:#333,stroke-width:2px
+    style ServidorBD fill:#f0f0f0,stroke:#333,stroke-width:2px
+    style ServidorExterno fill:#fafafa,stroke:#333,stroke-width:2px
 ```
 
 ---
