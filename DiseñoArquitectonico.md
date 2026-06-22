@@ -83,7 +83,7 @@ graph TD
     APICentral --> Adaptador
     Adaptador -->|HTTP REST: Sincroniza stock| APISupermercado
 
-    %% Estilos sencillos para que se vea ordenado
+    %% Estilos para que no se vea feo
     style CelularPicker fill:#f9f9f9,stroke:#333,stroke-width:2px
     style ServidorBackend fill:#f5f5f5,stroke:#333,stroke-width:2px
     style ServidorBD fill:#f0f0f0,stroke:#333,stroke-width:2px
