@@ -78,7 +78,7 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 # Link [Requisitos Extrafuncionales](RequisitosExtrafuncionales.md)
 
 
-# 📦 Artefactos del Proyecto
+## 📦 Artefactos del Proyecto
 
 | Artefacto | Archivo |
 |------------|------------|
@@ -86,10 +86,8 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 | Entidades del Dominio | EntidadesDelDominio.md |
 | Requisitos Extrafuncionales | RequisitosExtrafuncionales.md |
 | Impact Analysis | impact_analysis.md |
-| Especificación HU08 | EspecificacionHU08.md |
-| Especificación HU14 | EspecificacionHU14.md |
+| Especificación HU03 | EspecificacionHU03.md |
 | Deuda Técnica | DeudaTecnica.md |
-
 ---
 
 # 🧪 Casos de Prueba API-Login (HU14)
