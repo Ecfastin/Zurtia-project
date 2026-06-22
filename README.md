@@ -88,8 +88,8 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 | Impact Analysis | impact_analysis.md |
 | Especificación HU | EspecificacionHU03.md |
 | Diagrama de despliegue y comp.|<img width="669" height="474" alt="image" src="https://github.com/user-attachments/assets/6809c969-491b-41d3-8ba3-d2a8f765cc64" />|
-| Diagrama de componentes  | |
-Diagrama de secuencia   | |
+| Diagrama de componentes  |<img width="718" height="508" alt="image" src="https://github.com/user-attachments/assets/d48a1ef3-f9d4-41ff-a398-4288667d5734" />|
+Diagrama de secuencia   | <img width="671" height="295" alt="image" src="https://github.com/user-attachments/assets/65ddbc87-f9a8-4309-9527-96144e428554" />|
 | Deuda Técnica | DeudaTecnica.md |
 ---
 
