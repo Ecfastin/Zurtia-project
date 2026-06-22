@@ -125,35 +125,56 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 | HU08-10 | Góndola ascendente mismo pasillo | `GET` | `/productos` | ninguno | HTTP 200 — Productos del mismo pasillo ordenados por `gondola` ASC |
 ---
 
-📐 Modelado de análisis (5.3)
-Modelo de dominio del sistema de pickeo
-Casos de uso:
-Picker
-Sistema de asignación
-Administrador
-Flujo principal: asignación automática de pedidos
-🎨 Modelado de diseño (5.4)
-Arquitectura en capas:
-Routes
-Controllers
-Services
-Repository
-Flujo de cola de asignación de pickers
-Modelo entidad-relación:
-Picker
-Pedido
-Cola de asignación
-🚀 Historia de Usuario implementada
-HU2 - Cola de asignación automática de pedidos
-📌 Descripción
+## 📐 Modelado de análisis (5.3)
+
+### Modelo de dominio del sistema de pickeo
+
+### Casos de uso:
+- Picker
+- Sistema de asignación
+- Administrador
+
+### Flujo principal:
+- Asignación automática de pedidos
+
+---
+
+## 🎨 Modelado de diseño (5.4)
+
+### Arquitectura en capas:
+- Routes
+- Controllers
+- Services
+- Repository
+
+### Flujo del sistema:
+- Cola de asignación de pickers
+
+### Modelo entidad-relación:
+- Picker
+- Pedido
+- Cola de asignación
+
+---
+
+## 🚀 Historia de Usuario implementada
+
+### HU2 - Cola de asignación automática de pedidos
+
+---
+
+### 📌 Descripción
 
 Como picker, quiero entrar a una cola de asignación automática de pedidos, para recibir pedidos de forma ordenada y eficiente según mi disponibilidad.
 
-⚙️ Funcionalidad implementada
-El picker puede ingresar a la cola de asignación
-El sistema valida disponibilidad del usuario
-El picker entra en una cola FIFO
-El sistema asigna pedidos automáticamente según orden de llegada
+---
+
+### ⚙️ Funcionalidad implementada
+
+- El picker puede ingresar a la cola de asignación
+- El sistema valida disponibilidad del usuario
+- El picker entra en una cola FIFO
+- El sistema asigna pedidos automáticamente según orden de llegada
 
 ---
 
