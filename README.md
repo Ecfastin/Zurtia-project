@@ -68,6 +68,7 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 
 # Link [Requisitos Extrafuncionales](RequisitosExtrafuncionales.md)
 
+
 # 📦 Artefactos del Proyecto
 
 | Artefacto | Archivo |
@@ -79,199 +80,123 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 | Especificación HU08 | EspecificacionHU08.md |
 | Especificación HU14 | EspecificacionHU14.md |
 | Deuda Técnica | DeudaTecnica.md |
-| Casos de Prueba | README.md |
 
 ---
 
-# 🧪 Casos de Prueba
+# 🧪 Casos de Prueba API-Productos (HU08)
 
-## API Productos (HU08)
-
-**Historia de Usuario:**
-
-Como picker, quiero que la lista de productos incluya la ubicación exacta (pasillos y góndola) de cada artículo para optimizar mi recorrido en el supermercado.
-
-### Casos de prueba
-
-1. Listar todos los productos.
-2. Verificar orden de categorías (Secos primero).
-3. Verificar Congelados al final.
-4. Verificar orden descendente de pasillos.
-5. Verificar presencia del campo pasillo.
-6. Verificar presencia del campo góndola.
-7. Verificar presencia del campo imagen_url.
-8. Verificar presencia del campo categoría.
-9. Verificar respuesta HTTP 200.
-10. Verificar orden ascendente de góndolas en mismo pasillo.
-
----
-
-## API Login (HU14)
-
-**Historia de Usuario:**
-
-Como picker, quiero iniciar sesión con mi correo electrónico personal para acceder de forma sencilla y segura a mi panel de tareas.
-
-### Casos de prueba
-
-1. Login exitoso picker.
-2. Login exitoso supervisor.
-3. Contraseña incorrecta.
-4. Correo no registrado.
-5. Falta contraseña.
-6. Falta correo.
-7. Body vacío.
-8. Contraseña vacía.
-9. Correo vacío.
-10. Formato de correo inválido.
-
----
-
-## 🧪 Casos de Prueba API-Productos (HU08)
-
-- [HU08-01 Listar todos los productos](#hu08-01-listar-todos-los-productos)
-- [HU08-02 Secos primero](#hu08-02-verificar-orden-categorías-secos-primero)
-- [HU08-03 Congelados al final](#hu08-03-verificar-congelados-al-final)
-- [HU08-04 Pasillo descendente en Secos](#hu08-04-verificar-pasillo-descendente-en-secos)
-- [HU08-05 Campo pasillo](#hu08-05-verificar-campo-pasillo-presente)
-- [HU08-06 Campo góndola](#hu08-06-verificar-campo-góndola-presente)
-- [HU08-07 Campo imagen_url](#hu08-07-verificar-campo-imagen-url-presente)
-- [HU08-08 Campo categoría](#hu08-08-verificar-campo-categoría-presente)
-- [HU08-09 Status 200](#hu08-09-verificar-retorna-status-200)
-- [HU08-10 Góndola ascendente](#hu08-10-verificar-góndola-ascendente-mismo-pasillo)
-
----
-
-## HU08-01 Listar todos los productos
-Se obtiene correctamente el listado completo de productos con su información de ubicación.
-**Resultado esperado:** HTTP 200 — Array con todos los productos
-
----
-
-## HU08-02 Verificar orden categorías — Secos primero
-Se valida que la categoría "Secos" aparece primero en la lista de productos.
-**Resultado esperado:** HTTP 200 — productos[0].categoria === "Secos"
-
----
-
-## HU08-03 Verificar Congelados al final
-Se valida que los productos "Congelados" aparecen al final de la lista.
-**Resultado esperado:** HTTP 200 — Último producto con categoria === "Congelados"
-
----
-
-## HU08-04 Verificar pasillo descendente en Secos
-Se valida que los productos de categoría "Secos" estén ordenados por pasillo en orden descendente.
-**Resultado esperado:** HTTP 200 — Pasillos en orden descendente dentro de Secos
-
----
-
-## HU08-05 Verificar campo pasillo presente
-Se valida que todos los productos incluyen el campo pasillo.
-**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo pasillo
-
----
-
-## HU08-06 Verificar campo góndola presente
-Se valida que todos los productos incluyen el campo góndola.
-**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo gondola
-
----
-
-## HU08-07 Verificar campo imagen_url presente
-Se valida que todos los productos incluyen el campo imagen_url.
-**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo imagen_url
-
----
-
-## HU08-08 Verificar campo categoría presente
-Se valida que todos los productos incluyen el campo categoría.
-**Resultado esperado:** HTTP 200 — Todos los objetos incluyen campo categoria
-
----
-
-## HU08-09 Verificar retorna status 200
-Se valida que la API responde correctamente.
+## HU08-01 Listar productos
+Valida que se obtienen todos los productos correctamente.  
 **Resultado esperado:** HTTP 200
 
+## HU08-02 Secos primero
+Valida que la categoría Secos aparece primero.  
+**Resultado esperado:** Secos en primera posición
+
+## HU08-03 Congelados al final
+Valida que Congelados aparece al final.  
+**Resultado esperado:** Último elemento Congelados
+
+## HU08-04 Pasillo descendente
+Valida orden correcto por pasillo en Secos.  
+**Resultado esperado:** Orden descendente
+
+## HU08-05 Campo pasillo
+Todos los productos incluyen pasillo.
+
+## HU08-06 Campo góndola
+Todos los productos incluyen góndola.
+
+## HU08-07 Campo imagen
+Todos los productos incluyen imagen_url.
+
+## HU08-08 Campo categoría
+Todos los productos incluyen categoría.
+
+## HU08-09 Status 200
+Respuesta correcta del servidor.
+
+## HU08-10 Góndola ascendente
+Orden correcto dentro del mismo pasillo.
+
 ---
 
-## HU08-10 Verificar góndola ascendente mismo pasillo
-Se valida que dentro del mismo pasillo los productos se ordenan por góndola en forma ascendente.
-**Resultado esperado:** HTTP 200 — Góndolas en orden ascendente dentro del mismo pasillo
-
-## 🧪 Casos de Prueba API-Login (HU14)
-
-- [HU14-01 Login exitoso picker](#hu14-01-login-exitoso-picker)
-- [HU14-02 Login exitoso supervisor](#hu14-02-login-exitoso-supervisor)
-- [HU14-03 Contraseña incorrecta](#hu14-03-contraseña-incorrecta)
-- [HU14-04 Correo no registrado](#hu14-04-correo-no-registrado)
-- [HU14-05 Falta password](#hu14-05-falta-password)
-- [HU14-06 Falta correo](#hu14-06-falta-correo)
-- [HU14-07 Body vacío](#hu14-07-body-vacío)
-- [HU14-08 Password vacío](#hu14-08-password-vacío)
-- [HU14-09 Correo vacío](#hu14-09-correo-vacío)
-- [HU14-10 Correo formato inválido](#hu14-10-correo-formato-inválido)
-
----
+# 🧪 Casos de Prueba API-Login (HU14)
 
 ## HU14-01 Login exitoso picker
-El usuario picker ingresa correctamente al sistema con credenciales válidas y recibe un token de autenticación.
-**Resultado esperado:** HTTP 200 — Login exitoso
-
----
+Login correcto con credenciales válidas.  
+**Resultado esperado:** HTTP 200
 
 ## HU14-02 Login exitoso supervisor
-El usuario supervisor ingresa correctamente al sistema con credenciales válidas y recibe un token de autenticación.
-**Resultado esperado:** HTTP 200 — Login exitoso
-
----
+Login correcto supervisor.  
+**Resultado esperado:** HTTP 200
 
 ## HU14-03 Contraseña incorrecta
-El sistema rechaza el acceso cuando la contraseña no coincide con el usuario registrado.
-**Resultado esperado:** HTTP 401 — Contraseña incorrecta
-
----
+Credenciales inválidas.  
+**Resultado:** HTTP 401
 
 ## HU14-04 Correo no registrado
-El sistema rechaza el login cuando el correo no existe en la base de datos.
-**Resultado esperado:** HTTP 401 — Correo no registrado
-
----
+Usuario no existe.  
+**Resultado:** HTTP 401
 
 ## HU14-05 Falta password
-El sistema detecta que falta el campo password en la solicitud.
-**Resultado esperado:** HTTP 400 — Campos requeridos
-
----
+Falta campo password.  
+**Resultado:** HTTP 400
 
 ## HU14-06 Falta correo
-El sistema detecta que falta el campo correo en la solicitud.
-**Resultado esperado:** HTTP 400 — Campos requeridos
-
----
+Falta campo correo.  
+**Resultado:** HTTP 400
 
 ## HU14-07 Body vacío
-El sistema rechaza la solicitud por no enviar datos.
-**Resultado esperado:** HTTP 400 — Campos requeridos
-
----
+Solicitud vacía.  
+**Resultado:** HTTP 400
 
 ## HU14-08 Password vacío
-El sistema detecta password vacío y rechaza el login.
-**Resultado esperado:** HTTP 400 — Campos requeridos
-
----
+Password vacío no permitido.  
+**Resultado:** HTTP 400
 
 ## HU14-09 Correo vacío
-El sistema detecta correo vacío y rechaza el login.
-**Resultado esperado:** HTTP 400 — Campos requeridos
+Correo vacío no permitido.  
+**Resultado:** HTTP 400
+
+## HU14-10 Correo inválido
+Formato inválido.  
+**Resultado:** HTTP 401
 
 ---
 
-## HU14-10 Correo formato inválido
-El sistema rechaza el correo porque no cumple formato válido.
-**Resultado esperado:** HTTP 401 — Correo no registrado
+# 📐 Modelado de Análisis
 
-# Link [EntidadesDelDominio](EntidadesDelDominio.md)
+- Modelo de dominio → EntidadesDelDominio.md
+- Casos de uso → documentados en README
+- Especificación HU08 → EspecificacionHU08.md
+- Especificación HU14 → EspecificacionHU14.md
 
+---
+
+# 🎨 Modelado de Diseño
+
+- Arquitectura → DiseñoArquitectonico.md
+- Componentes → arquitectura del backend y frontend
+- Secuencia → flujo login y productos
+- Despliegue → sistema cliente-servidor
+
+---
+
+# 🌿 Git Workflow
+
+- feature-hu08
+- feature-hu14
+- Pull Requests hacia main
+
+---
+
+# ⚙️ Instalación y Ejecución
+
+## Requisitos
+- Node.js
+- npm
+
+## Instalación
+```bash
+npm install
