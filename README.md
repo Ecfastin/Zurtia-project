@@ -19,6 +19,15 @@
 | **Cristofer Riveros Gapuz**| Developer     |1.1- 2.1  |
 | **Ignacio Cortés Catrín**    | Developer     |3.1- 2.1- 1.1  |
 | **Patricio Rivadeneira Alfaro** | Developer | 4.1- 2.1- 1.1 |
+### Entrega 3
+
+| Nombre | Rol | Actividad |
+|--------|-----|-----------|
+| **Ariadna Espejo Torres** | Product Owner | Especificación HU08 y HU14 |
+| **Benjamin Figueroa Matamala** | Scrum Master | Coordinación, DeudaTecnica.md |
+| **Cristofer Riveros Gapuz** | Developer | Implementación API HU08 y HU14 |
+| **Ignacio Cortés Catrín** | Developer | Implementación API HU08 y HU14 |
+| **Patricio Rivadeneira Alfaro** | Developer | CasosDePrueba.md, Thunder Client |
 ## 📋 Backlog de Historias de Usuario
 
 | ID | Nombre de la Historia de Usuario | Issue |
