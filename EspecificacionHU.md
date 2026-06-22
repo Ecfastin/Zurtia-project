@@ -2,51 +2,25 @@
 
 ---
 
-## HU14 — Login del Picker
+## HU2 — Cola de Asignación Automática de Pedidos
 
-**Como** picker,  
-**quiero** iniciar sesión con mi correo electrónico personal,  
-**para** acceder de forma sencilla y segura a mi panel de tareas.
-
-### Criterios de Aceptación
-
-| # | Dado que... | Cuando... | Entonces... |
-|---|-------------|-----------|-------------|
-| 1 | El picker tiene una cuenta registrada | Ingresa su correo y contraseña correctos vía `POST /login` | El sistema responde con HTTP 200 y retorna los datos del usuario (id, nombre, correo, rol) |
-| 2 | El picker ingresa un correo no registrado | Envía la solicitud de login | El sistema responde con HTTP 401 y el mensaje "Correo no registrado" |
-| 3 | El picker ingresa una contraseña incorrecta | Envía la solicitud de login | El sistema responde con HTTP 401 y el mensaje "Contraseña incorrecta" |
-| 4 | El picker omite el correo o la contraseña | Envía la solicitud de login | El sistema responde con HTTP 400 y el mensaje "Correo y contraseña son requeridos" |
-
-### Definition of Done
-
-- [x] Endpoint `POST /login` implementado y funcional
-- [x] Validaciones de campos vacíos implementadas
-- [x] Respuestas de error con códigos HTTP correctos
-- [x] Documentación Swagger disponible en `/docs`
-- [x] Pruebas realizadas con Thunder Client (`thunder-tests-hu14.json`)
-- [x] Código integrado a la rama `main` via Pull Request
-
----
-
-## HU8 — Lista de Productos con Ubicación
-
-**Como** picker,  
-**quiero** que la lista de productos incluya la ubicación exacta (pasillos y góndola) de cada artículo,  
-**para** optimizar mi recorrido en el supermercado.
+Como picker,  
+quiero entrar a una cola de asignación automática de pedidos,  
+para recibir pedidos de forma ordenada y eficiente según mi disponibilidad.
 
 ### Criterios de Aceptación
 
 | # | Dado que... | Cuando... | Entonces... |
-|---|-------------|-----------|-------------|
-| 1 | Existen productos registrados en el sistema | El picker hace `GET /productos` | El sistema responde con HTTP 200 y una lista de productos con id, nombre, categoría, pasillo, góndola e imagen_url |
-| 2 | Los productos están ordenados para optimizar el recorrido | El picker recibe la lista | Los productos están ordenados por categoría (Secos → Frutas y Verduras → Refrigerados → Congelados) y luego por pasillo y góndola |
-| 3 | No hay productos en el sistema | El picker hace `GET /productos` | El sistema responde con HTTP 404 y el mensaje "No hay productos disponibles" |
+|---|---|---|---|
+| 1 | He finalizado mi pedido actual | Presiono "Finalizado y seguir activo" | El sistema cambia mi estado a "Disponible" y me agrega a la cola de espera para el siguiente pedido |
+| 2 | Estoy "Disponible" | El sistema me asigna un nuevo pedido | La app muestra un aviso visible con los datos básicos del pedido y un contador regresivo de 60 segundos para aceptar o rechazar |
+| 3 | Recibo el aviso | No acepto o el contador llega a cero | El sistema me desasigna el pedido, cambia mi estado a "No disponible" y devuelve el pedido a la cola para ser reasignado |
+| 4 | Acepto el pedido dentro del tiempo establecido | El sistema confirma la aceptación | La app carga la información del pedido en un máximo de 3 segundos |
 
 ### Definition of Done
-
-- [x] Endpoint `GET /productos` implementado y funcional
-- [x] Ordenamiento por categoría y ubicación implementado en la query SQL
-- [x] Respuesta incluye campos de ubicación: `pasillo` y `gondola`
-- [x] Documentación Swagger disponible en `/docs`
-- [x] Pruebas realizadas con Thunder Client (`thunder-tests-hu8.json`)
-- [x] Código integrado a la rama `main` via Pull Request
+- [ ] Endpoint de cola de asignación implementado y funcional
+- [ ] Lógica FIFO implementada para asignación de pedidos
+- [ ] Estado del picker actualizable (Disponible / No disponible)
+- [ ] Contador regresivo de 60 segundos implementado
+- [ ] Reasignación automática ante rechazo o timeout
+- [ ] Código integrado a la rama main via Pull Request
