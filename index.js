@@ -6,7 +6,12 @@ const jwt = require('jsonwebtoken'); // Importar JWT
 
 const app = express();
 app.use(express.json());
-app.use(express.static('public'));
+
+// Middleware de logs para diagnóstico
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secreto_super_seguro';
 
@@ -67,6 +72,25 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+// Endpoint de usuarios
+app.get('/usuarios', authenticateToken, async (req, res) => {
+    console.log('--- ENTRANDO A /usuarios ---');
+    try {
+        const { rol } = req.query;
+        let query = 'SELECT id, nombre, correo, rol, disponible FROM usuarios';
+        let params = [];
+        if (rol) {
+            query += ' WHERE rol = $1';
+            params.push(rol);
+        }
+        const result = await db.query(query, params);
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error en /usuarios:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
 // ─── HU #8: Productos con ubicación ──────────────────────────────────────────
 /**
  * @swagger
@@ -106,19 +130,44 @@ app.get('/productos', async (req, res) => {
     }
 });
 
-// ─── Endpoints de Usuarios y Pedidos (Protegidos) ───────────────────────────
-
-app.get('/usuarios', authenticateToken, async (req, res) => {
+app.patch('/usuarios/:id/disponibilidad', authenticateToken, async (req, res) => {
     try {
-        const { rol } = req.query;
-        let query = 'SELECT id, nombre, correo, rol FROM usuarios';
-        let params = [];
-        if (rol) {
-            query += ' WHERE rol = $1';
-            params.push(rol);
+        const { disponible } = req.body;
+        await db.query('UPDATE usuarios SET disponible = $1 WHERE id = $2', [disponible, req.params.id]);
+        
+        // Si se marca disponible, intentar asignar un pedido pendiente
+        if (disponible) {
+            const pedidoRes = await db.query('SELECT * FROM pedidos WHERE estado = $1 AND picker_id IS NULL LIMIT 1', ['pendiente']);
+            if (pedidoRes.rows.length > 0) {
+                const pedido = pedidoRes.rows[0];
+                await db.query('UPDATE pedidos SET picker_id = $1, estado = $2 WHERE id = $3', [req.params.id, 'en_proceso', pedido.id]);
+            }
         }
-        const result = await db.query(query, params);
-        res.json(result.rows);
+        res.json({ mensaje: 'Disponibilidad actualizada' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Endpoint para que el picker marque el pedido como completado
+app.patch('/pedidos/:id/completar', authenticateToken, async (req, res) => {
+    try {
+        await db.query('UPDATE pedidos SET estado = $1 WHERE id = $2', ['completado', req.params.id]);
+        
+        // Asignar siguiente pedido si hay disponible
+        const pickerRes = await db.query('SELECT picker_id FROM pedidos WHERE id = $1', [req.params.id]);
+        const picker_id = pickerRes.rows[0].picker_id;
+        
+        const nextPedidoRes = await db.query('SELECT * FROM pedidos WHERE estado = $1 AND picker_id IS NULL LIMIT 1', ['pendiente']);
+        if (nextPedidoRes.rows.length > 0) {
+            const nextPedido = nextPedidoRes.rows[0];
+            await db.query('UPDATE pedidos SET picker_id = $1, estado = $2 WHERE id = $3', [picker_id, 'en_proceso', nextPedido.id]);
+        } else {
+            // Si no hay más pedidos, marcar picker como no disponible
+            await db.query('UPDATE usuarios SET disponible = $1 WHERE id = $2', [false, picker_id]);
+        }
+        
+        res.json({ mensaje: 'Pedido completado y nueva tarea asignada si corresponde' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -211,17 +260,33 @@ app.get('/pedidos/:id', authenticateToken, async (req, res) => {
 app.patch('/pedido-productos/:id', authenticateToken, async (req, res) => {
     try {
         const { cantidad_recolectada } = req.body;
-        const result = await db.query(
+        
+        // Obtener datos actuales para validar
+        const prodResult = await db.query(
+            'SELECT pp.cantidad_solicitada FROM pedido_productos pp WHERE pp.id = $1',
+            [req.params.id]
+        );
+        if (prodResult.rows.length === 0) return res.status(404).json({ error: 'Registro no encontrado' });
+        
+        const cantidad_solicitada = prodResult.rows[0].cantidad_solicitada;
+
+        // Validaciones
+        if (cantidad_recolectada < 0 || cantidad_recolectada > cantidad_solicitada) {
+            return res.status(400).json({ error: 'Cantidad inválida' });
+        }
+
+        await db.query(
             'UPDATE pedido_productos SET cantidad_recolectada = $1 WHERE id = $2',
             [cantidad_recolectada, req.params.id]
         );
-        if (result.rowCount === 0) return res.status(404).json({ error: 'Registro de producto no encontrado' });
         res.json({ mensaje: 'Cantidad actualizada' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
+// Servir archivos estáticos DESPUÉS de las rutas de la API
+app.use(express.static('public'));
 
 const PORT = process.env.PORT || 3000;
 

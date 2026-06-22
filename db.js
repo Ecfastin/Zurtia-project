@@ -24,11 +24,12 @@ async function initDB() {
             // Crear tablas si no existen
             await pool.query(`
                 CREATE TABLE IF NOT EXISTS usuarios (
-                    id       SERIAL PRIMARY KEY,
-                    nombre   TEXT NOT NULL,
-                    correo   TEXT NOT NULL UNIQUE,
-                    password TEXT NOT NULL,
-                    rol      TEXT NOT NULL DEFAULT 'picker'
+                    id          SERIAL PRIMARY KEY,
+                    nombre      TEXT NOT NULL,
+                    correo      TEXT NOT NULL UNIQUE,
+                    password    TEXT NOT NULL,
+                    rol         TEXT NOT NULL DEFAULT 'picker',
+                    disponible  BOOLEAN DEFAULT FALSE
                 )
             `);
 
@@ -65,8 +66,9 @@ async function initDB() {
             // Seed usuarios
             const usuariosCount = await pool.query('SELECT COUNT(*) FROM usuarios');
             if (parseInt(usuariosCount.rows[0].count) === 0) {
-                await pool.query('INSERT INTO usuarios (nombre, correo, password, rol) VALUES ($1, $2, $3, $4)', ['Juan Pérez', 'picker@zurtia.cl', '1234', 'picker']);
-                await pool.query('INSERT INTO usuarios (nombre, correo, password, rol) VALUES ($1, $2, $3, $4)', ['Ana López', 'supervisor@zurtia.cl', 'abcd', 'supervisor']);
+                await pool.query('INSERT INTO usuarios (nombre, correo, password, rol, disponible) VALUES ($1, $2, $3, $4, $5)', ['Juan Pérez', 'picker1@zurtia.cl', '1234', 'picker', false]);
+                await pool.query('INSERT INTO usuarios (nombre, correo, password, rol, disponible) VALUES ($1, $2, $3, $4, $5)', ['María Silva', 'picker2@zurtia.cl', '1234', 'picker', false]);
+                await pool.query('INSERT INTO usuarios (nombre, correo, password, rol, disponible) VALUES ($1, $2, $3, $4, $5)', ['Ana López', 'supervisor@zurtia.cl', 'abcd', 'supervisor', false]);
                 console.log('Usuarios iniciales insertados.');
             }
 

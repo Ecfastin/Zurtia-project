@@ -67,5 +67,45 @@ Zurita es un Software hecho para cubrir las necesidades de Los principales super
 # Link [Decisión Arquitectónica](DiseñoArquitectonico.md)
 
 # Link [Requisitos Extrafuncionales](RequisitosExtrafuncionales.md)
-# Link [EntidadesDelDominio](EntidadesDelDominio.md)
+
+# 🚀 Instrucciones de instalación y ejecución
+
+### Requisitos previos
+- **Node.js**: v20+ (recomendado LTS)
+- **npm**: v10+
+- **PostgreSQL**: v15+ (si no usas Docker)
+- **Docker & Docker Compose**: (recomendado para desarrollo)
+
+### Variables de entorno
+Crea un archivo `.env` en la raíz del proyecto basado en el archivo `.env.example`:
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=tu_contraseña
+DB_NAME=zurtia_db
+PORT=3000
+JWT_SECRET=secreto_super_seguro
+```
+
+### Instalación y ejecución (con Docker)
+Esta es la forma más rápida y recomendada:
+1. Asegúrate de tener Docker Desktop corriendo.
+2. Ejecuta el siguiente comando en la raíz del proyecto:
+   ```bash
+   docker-compose up --build
+   ```
+La aplicación estará disponible en `http://localhost:3000`.
+
+### Instalación y ejecución (sin Docker)
+1. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+2. Asegúrate de tener una base de datos PostgreSQL corriendo y configurada con las credenciales de tu archivo `.env`.
+3. Inicia la aplicación:
+   ```bash
+   npm start
+   ```
+La aplicación estará disponible en `http://localhost:3000`.
 

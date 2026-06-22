@@ -78,7 +78,6 @@
             }
         });
 
-        // Helper para hacer requests autenticados
         async function fetchAuth(url, options = {}) {
             const token = localStorage.getItem('token');
             const headers = {
@@ -95,6 +94,13 @@
                 logout(); // Token expirado o inválido
                 throw new Error('Sesión expirada');
             }
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const text = await response.text();
+                console.error('Respuesta no es JSON:', text);
+                throw new Error(`El servidor respondió con ${contentType || 'formato desconocido'} en lugar de JSON. Verifica la ruta: ${url}`);
+            }
             
             return response;
         }
@@ -102,13 +108,18 @@
         async function showApp() {
             loginContainer.classList.add('hidden');
             mainContent.classList.remove('hidden');
-            const user = JSON.parse(localStorage.getItem('user'));
-            document.getElementById('user-role-display').textContent = user.rol.toUpperCase();
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                document.getElementById('user-role-display').textContent = user.rol.toUpperCase();
 
-            if (user.rol === 'supervisor') {
-                renderSupervisorView();
-            } else {
-                renderPickerView();
+                if (user.rol === 'supervisor') {
+                    await renderSupervisorView();
+                } else {
+                    await renderPickerView();
+                }
+            } catch (err) {
+                console.error('Error al cargar la aplicación:', err);
+                document.getElementById('content-area').innerHTML = `<p class="text-red-500">Error al cargar: ${err.message}</p>`;
             }
         }
 
@@ -123,6 +134,10 @@
             
             area.innerHTML = `
                 <h2 class="text-xl font-bold mb-4">Gestión de Pedidos</h2>
+                <div class="mb-6 p-4 bg-white rounded shadow">
+                    <h3 class="font-bold mb-2">Pickers:</h3>
+                    ${pickers.map(u => `<p>${u.nombre} - ${u.disponible ? '🟢 Disponible' : '🔴 No disponible'}</p>`).join('')}
+                </div>
                 <div class="space-y-4">
                     ${pedidos.map(p => `
                         <div class="bg-white p-4 rounded shadow flex justify-between items-center">
@@ -163,12 +178,26 @@
             const area = document.getElementById('content-area');
             const user = JSON.parse(localStorage.getItem('user'));
             
+            // Obtener datos actualizados del usuario para ver si está disponible
+            const uRes = await fetchAuth(`/usuarios?rol=picker`);
+            const pickers = await uRes.json();
+            const me = pickers.find(p => p.id === user.id);
+            
             // Buscar pedido en proceso para este picker
             const res = await fetchAuth(`/pedidos?picker_id=${user.id}&estado=en_proceso`);
             const pedidos = await res.json();
             
+            area.innerHTML = `
+                <div class="mb-4">
+                    <button onclick="toggleDisponibilidad(${user.id}, ${!me.disponible})" 
+                            class="px-4 py-2 rounded ${me.disponible ? 'bg-red-500' : 'bg-green-500'} text-white">
+                        ${me.disponible ? 'No disponible' : 'Disponible'}
+                    </button>
+                </div>
+            `;
+
             if (pedidos.length === 0) {
-                area.innerHTML = `<div class="text-center py-10 text-gray-500">Esperando pedido...</div>`;
+                area.innerHTML += `<div class="text-center py-10 text-gray-500">Esperando pedido...</div>`;
                 return;
             }
 
@@ -176,24 +205,56 @@
             const pRes = await fetchAuth(`/pedidos/${pedido.id}`);
             const pData = await pRes.json();
             
-            area.innerHTML = `
+            const completado = pData.productos.every(p => p.cantidad_recolectada === p.cantidad_solicitada);
+            
+            area.innerHTML += `
                 <h2 class="text-xl font-bold mb-4">Pedido en proceso #${pedido.id}</h2>
                 <div class="grid grid-cols-1 gap-4">
                     ${pData.productos.map(p => `
-                        <div class="bg-white p-4 rounded shadow">
-                            <h3 class="font-bold">${p.nombre}</h3>
-                            <p>Recogido: ${p.cantidad_recolectada} / ${p.cantidad_solicitada}</p>
-                            <button onclick="recolectar(${p.id}, ${p.pedido_id}, ${p.cantidad_recolectada + 1})" class="bg-green-600 text-white px-4 py-1 rounded mt-2">Recolectar 1</button>
+                        <div class="bg-white p-4 rounded shadow border-l-4 ${p.cantidad_recolectada === p.cantidad_solicitada ? 'border-green-500' : 'border-blue-500'}">
+                            <h3 class="font-bold text-lg">${p.nombre}</h3>
+                            <p>Recogido: <strong>${p.cantidad_recolectada} / ${p.cantidad_solicitada}</strong></p>
+                            <div class="flex gap-2 mt-2">
+                                <button onclick="recolectar(${p.id}, ${p.cantidad_recolectada - 1})" 
+                                        class="bg-red-500 text-white px-4 py-2 rounded" 
+                                        ${p.cantidad_recolectada === 0 ? 'disabled' : ''}>-</button>
+                                <button onclick="recolectar(${p.id}, ${p.cantidad_recolectada + 1})" 
+                                        class="bg-green-600 text-white px-4 py-2 rounded" 
+                                        ${p.cantidad_recolectada >= p.cantidad_solicitada ? 'disabled' : ''}>+</button>
+                            </div>
                         </div>
                     `).join('')}
                 </div>
+                ${completado ? `<button onclick="finalizarPedido(${pedido.id})" class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Finalizar Pedido</button>` : ''}
             `;
         }
 
-        async function recolectar(id, pedidoId, nuevaCantidad) {
-            await fetchAuth(`/pedido-productos/${id}`, {
+        async function finalizarPedido(pedidoId) {
+            await fetchAuth(`/pedidos/${pedidoId}/completar`, { method: 'PATCH' });
+            renderPickerView();
+        }
+
+        async function recolectar(id, nuevaCantidad) {
+            try {
+                const res = await fetchAuth(`/pedido-productos/${id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ cantidad_recolectada: nuevaCantidad })
+                });
+                if (!res.ok) {
+                    const err = await res.json();
+                    alert('Error: ' + err.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error al actualizar');
+            }
+            renderPickerView();
+        }
+
+        async function toggleDisponibilidad(userId, disponible) {
+            await fetchAuth(`/usuarios/${userId}/disponibilidad`, {
                 method: 'PATCH',
-                body: JSON.stringify({ cantidad_recolectada: nuevaCantidad })
+                body: JSON.stringify({ disponible })
             });
             renderPickerView();
         }
