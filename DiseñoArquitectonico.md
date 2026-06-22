@@ -46,3 +46,125 @@ Para **Zurtia**, los módulos se han estructurado siguiendo un estilo arquitect�
 * Escalabilidad: Al ser REST, podemos tener a 100 pickers conectados simultáneamente, ya que cada petición es independiente y segura gracias al JWT.
 
 * Resiliencia: El Módulo de Gestión de Estado local en la App permite que, si el servidor falla por un momento, el picker no pierda lo que ya escaneó.
+
+---
+
+## 🏗️ Modelado de Diseño (Diagramas)
+
+Para complementar la arquitectura REST/SOA explicada arriba, a continuación se presentan los diagramas lógicos y físicos del sistema utilizando Mermaid.js.
+
+### 1. Diagrama de Despliegue
+Muestra cómo se conectan los componentes físicos y lógicos de la app y qué protocolos se usan en la red.
+
+```mermaid
+deploymentDiagram
+    node CelularPicker ["Celular del Picker"] {
+        component FrontendApp ["Frontend Mobile App"]
+    }
+
+    node ServidorBackend ["Servidor Backend (Node.js)"] {
+        component APICentral ["API Central (picking y validación)"]
+        component ModuloAuth ["Capa de Servicios (Auth JWT)"]
+        component Adaptador ["Adaptador de Inventario"]
+    }
+
+    node ServidorBD ["Servidor BD Central"] {
+        database DBLocal ["Base de Datos Central"]
+    }
+
+    node ServidorExterno ["Servidor Externo"] {
+        component APISupermercado ["API Supermercado"]
+    }
+
+    FrontendApp --> |HTTP/HTTPS| APICentral : "Rutas API REST"
+    APICentral <--> ModuloAuth : "Filtro de JWT"
+    APICentral --> |Drivers BD| DBLocal : "Queries a la BD"
+    APICentral --> Adaptador : "Mapeo de datos antiguos"
+    Adaptador --> |HTTP REST| APISupermercado : "Sincroniza stock externo"
+```
+
+---
+
+### 2. Diagrama de Componentes
+Detalle de cómo dividimos los módulos del código por capas, especificando las interfaces de comunicación.
+
+```mermaid
+classDiagram
+    class FrontendMobileApp {
+        <<Component>>
+        +Módulo UI
+        +Gestión de Estado Local
+        +Módulo de Escaneo
+    }
+
+    class APICentralNode {
+        <<Component>>
+        <<Interface>> IHttpReceiver
+        +Gestión de Pedidos
+        +Módulo Notificaciones
+    }
+
+    class ServicioSeguridadJWT {
+        <<Component>>
+        <<Interface>> ISecurityAuth
+        +Módulo Autenticación
+    }
+
+    class AccesoDatosDB {
+        <<Component>>
+        <<Interface>> IPersistence
+        +Módulo BD Central
+        +Módulo Caché Imágenes
+    }
+
+    class AdaptadorSistemasExternos {
+        <<Component>>
+        <<Interface>> IExternalAdapter
+        +Adaptador de Inventario
+        +Integración de Precios
+    }
+
+    FrontendMobileApp ..> APICentralNode : "Usa endpoints HTTP"
+    APICentralNode ..> ServicioSeguridadJWT : "Valida token JWT"
+    APICentralNode ..> AccesoDatosDB : "Persistencia y Caché"
+    APICentralNode ..> AdaptadorSistemasExternos : "Interoperabilidad"
+```
+
+---
+
+### 3. Diagrama de Secuencia (Flujo Crítico de la HU)
+El paso a paso de lo que pasa entre las capas cuando el Picker interactúa con la app para realizar la validación de un picking.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Picker as Picker (Usuario)
+    participant Front as Frontend Mobile App
+    participant Back as API Central (Node.js)
+    participant Auth as Seguridad (JWT)
+    participant DB as Base de Datos Central
+    participant Ext as Adaptador Inventario
+
+    Picker->>Front: Escanea código o inicia picking de un pedido
+    Front->>Back: POST /api/picking/validar (Manda Token + datos)
+    activate Back
+    
+    Back->>Auth: validarToken(token)
+    activate Auth
+    Auth-->>Back: Token OK (Autorizado)
+    deactivate Auth
+
+    Back->>DB: guardarPedidoActivo() / actualizarEstado()
+    activate DB
+    DB-->>Back: Estado cambiado a "En Proceso"
+    deactivate DB
+
+    Back->>Ext: consultarStock / sincronizarConSupermercado()
+    activate Ext
+    Ext-->>Back: API Supermercado responde 200 OK (Datos en tiempo real)
+    deactivate Ext
+
+    Back-->>Front: HTTP 200 OK (Todo guardado y sincronizado)
+    deactivate Back
+    Front-->>Picker: Actualiza contador de progreso (ej: 26/42)
+```
